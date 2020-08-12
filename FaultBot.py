@@ -1,4 +1,5 @@
 # The fault bot that will upload fault data to the discord
+# Requires python-dotenv
 
 # Import the dependencies
 import os
@@ -105,15 +106,14 @@ async def sendHeroes(message, messageParts):
 # Sends match info
 # TODO fix the type checking for 3 params
 async def sendMatches(message, messageParts):
+    print("Match data requested")
     matches = 'No matches found'
     # No params given
     if len(messageParts) == 1:
-        print('no params entered')
         matches = f.get_matches(f.get_id(str(message.author).split('#')[0]), 1)
     # 1 param given, should be a name
     elif len(messageParts) == 2:
         # TODO need to add type checking
-        print('1 param entered')
         if isString(messageParts[1]):
             matches = f.get_matches(f.get_id(messageParts[1]), 1)
         else:
@@ -122,7 +122,6 @@ async def sendMatches(message, messageParts):
     # 2 or more params given, should be a name and number
     else:
         # TODO need to add type checking amd limit to 3
-        print('2 params entered')
         if int(messageParts[2]) > 3:
             messageParts[2] = 3
         matches = f.get_matches(f.get_id(messageParts[1]), messageParts[2])           

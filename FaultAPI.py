@@ -66,8 +66,10 @@ def get_id(user):
     # Get the player ID JSON from the website
     page_link = 'https://api.playfault.com/getTopPlayers/50/{0}'.format(user)
     page_json = http.request("GET", page_link).data
-    page_dict = json.loads(page_json)
-    
+    try:
+        page_dict = json.loads(page_json)
+    except:
+        page_dict = json.loads(str(page_json))
     # Attemt to get the ID from the json
     try:
         id = page_dict['players'][0]['id']
