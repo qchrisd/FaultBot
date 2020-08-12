@@ -53,7 +53,10 @@ def get_items():
     # Gets information from the website
     items_link = "https://api.playfault.com/items"
     items_json = http.request('GET', items_link).data
-    items = json.loads(items_json)
+    try:
+        items = json.loads(items_json)
+    except:
+        items = json.loads(items_json.decode('utf8'))
 
     return items
 
@@ -69,7 +72,7 @@ def get_id(user):
     try:
         page_dict = json.loads(page_json)
     except:
-        page_dict = json.loads(str(page_json))
+        page_dict = json.loads(page_json.decode('utf8'))
     # Attemt to get the ID from the json
     try:
         id = page_dict['players'][0]['id']
@@ -91,7 +94,10 @@ def get_matches(id, n):
     # Get the match info from the website
     page_link = 'https://api.playfault.com/getMatches/{0}/{1}'.format(id, n)
     page_json = http.request("GET", page_link).data
-    page_dict = json.loads(page_json)['matches']
+    try:
+        page_dict = json.loads(page_json)['matches']
+    except:
+        page_dict = json.loads(page_json.decode('utf8'))['matches']
     
     return page_dict
 
@@ -108,7 +114,10 @@ def get_heroes(id):
     # Collect info from Fault website and convert json to dict
     page_link = 'https://api.playfault.com/getPlayerHeroStats/{0}'.format(id)
     page_json = http.request("GET", page_link).data
-    page_dict = json.loads(page_json)['heroes']
+    try:
+        page_dict = json.loads(page_json)['heroes']
+    except:
+        page_dict = json.loads(page_json.decode('utf8'))['heroes']
     
     # Flatten dict into a list of dicts, one for each hero
     hero_dict = []
@@ -144,6 +153,9 @@ def get_elo(playerID):
     # Gets the information from the website
     page_link = 'https://api.playfault.com/getEloData/{0}'.format(playerID)
     page_json = http.request("GET", page_link).data
-    page_dict = json.loads(page_json)
+    try:
+        page_dict = json.loads(page_json)
+    except:
+        page_dict = json.loads(page_json.decode('utf8'))
 
     return page_dict
