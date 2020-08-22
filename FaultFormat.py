@@ -42,7 +42,7 @@ def format_matches(matches):
             # Gets the player MMR information
             player_elo = f.get_elo(player['PlayerID'])
             # Creates a string to add to the output
-            player_string = '\n - {0} ({1}: {2} ELO, Rank {3})'.format(f.heroes[player['HeroID']], player['Username'], player_elo['MMR'], player_elo['ranking'])
+            player_string = '\n - {0} ({1}: {2} [{3}] ELO, Rank {4})'.format(f.heroes[player['HeroID']], player['Username'], player_elo['MMR'], player["MMRChange"], player_elo['ranking'])
             # Sorts players into teams and adds ELO
             if player['Team'] == 0:
                 team0.append(player_string)
