@@ -7,6 +7,10 @@ import discord
 from dotenv import load_dotenv
 import FaultAPI as f
 import FaultFormat as fformat
+import logging
+
+# Set up logging
+logging.basicConfig(filename="FaultBot.log", format="[%(process)d] %(asctime)s - %(message)s", level=logging.INFO)
 
 # Load the environmental variables from the .env file
 load_dotenv()
@@ -57,6 +61,7 @@ def isInt(datum):
 @client.event
 async def on_ready():
         print('{0} has successfully connected to Discord'.format(client.user))
+        logging.info('{0} has successfully connected to Discord'.format(client.user))
 
 # Sends hero data to the discord
 async def sendHeroes(message, messageParts):
@@ -69,8 +74,9 @@ async def sendHeroes(message, messageParts):
      - deaths
      - assists
     """
-
+    # Logging
     print('Hero data requested')
+    logging.info('Hero data requested')
 
     # Sets default sortBy criteria
     sortBy = 'games'
@@ -106,8 +112,13 @@ async def sendHeroes(message, messageParts):
 # Sends match info
 # TODO fix the type checking for 3 params
 async def sendMatches(message, messageParts):
+
+    # Logging
+    logging.info('Match data requested')
     print("Match data requested")
+
     matches = 'No matches found'
+
     # No params given
     if len(messageParts) == 1:
         matches = f.get_matches(f.get_id(str(message.author).split('#')[0]), 1)
@@ -134,6 +145,8 @@ async def sendMatches(message, messageParts):
 # Sends the elo information of the given player
 async def send_elo(message, messageParts):
 
+    # Logging
+    logging.info('ELO data requested')
     print('ELO data requested')
 
     # Message author is the user
@@ -169,6 +182,7 @@ async def on_message(message):
 
     # Send help message
     if messageParts[0] == '!help':
+        logging.info('Help requested')
         await message.channel.send(helpMessage)
         return
 
