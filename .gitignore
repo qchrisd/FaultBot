@@ -1,3 +1,4 @@
 .env
 *.pyc
 *.code-workspace
+*.log
