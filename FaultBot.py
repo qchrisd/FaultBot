@@ -60,7 +60,7 @@ def isInt(datum):
 # The on ready event for when the bot logs into the server
 @client.event
 async def on_ready():
-        print('{0} has successfully connected to Discord'.format(client.user))
+        # print('{0} has successfully connected to Discord'.format(client.user))
         logging.info('{0} has successfully connected to Discord'.format(client.user))
 
 # Sends hero data to the discord
@@ -75,7 +75,7 @@ async def sendHeroes(message, messageParts):
      - assists
     """
     # Logging
-    print('Hero data requested')
+    # print('Hero data requested')
     logging.info('Hero data requested')
 
     # Sets default sortBy criteria
@@ -115,7 +115,7 @@ async def sendMatches(message, messageParts):
 
     # Logging
     logging.info('Match data requested')
-    print("Match data requested")
+    # print("Match data requested")
 
     matches = 'No matches found'
 
@@ -147,7 +147,7 @@ async def send_elo(message, messageParts):
 
     # Logging
     logging.info('ELO data requested')
-    print('ELO data requested')
+    # print('ELO data requested')
 
     # Message author is the user
     user = str(message.author).split('#')[0]
