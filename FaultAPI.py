@@ -41,7 +41,9 @@ heroes = {
     12: 'Narbash',
     13: 'Steel',
     14: 'Boris',
-    15: 'Sparrow'
+    15: 'Sparrow',
+    16: 'Dekker',
+    17: 'Grim.exe'
     }
 
 
