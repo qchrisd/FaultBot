@@ -1,4 +1,14 @@
-This is the FaultBot for discord.
+This is the FaultBot for discord created for lovers of Fault.
+
+The bot pulls information from the PlayFault.com API to deliver match and player information with ease.
+
+Present functionality:
+ - Display the command list (!help)
+ - Collect the most recent match information (!matches)
+ - Collect the elo for the given player (!elo)
+ - Collect the hero preference and performance information for a given player (!heroes)
 
 To Do:
- - Add a logging function for autonomous logging needs
+ - Refactor FaultBot.py to import the FaultAPI.py when information is asked for. This will allow for testing and maintenance while the bot is live.
+ - Change the messaging function to embeded messages for better readability and formatting.
+ - Add functinality to FaultAPI.py to collect hero pick rates and win rates.
