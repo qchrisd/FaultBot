@@ -34,8 +34,8 @@ def format_matches(matches, player_id):
 
     # Creates a dict object to return and adds the title, description, and footer
     output = {}
-    output['title'] = f"Winners: {winner}"
-    output['description'] = f"Length: {match['TimeLength']} [ID: {str(match['ID'])}]"
+    output['title'] = "Winners: {0}".format(winner)
+    output['description'] = "Length: {0} [ID: {1}]".format(match['TimeLength'], str(match['ID']))
     output['footer'] = ""
 
     # Creates useful structures for holding data for iterating for each player
@@ -101,6 +101,7 @@ def format_heroes(heroList, sortCriteria, username):
         heroLine = " - {0} ({1} games): {2:.2f}% ({3:.2f} total KDA)\n".format(hero['hero'], hero['games'], winrate, totKDA)
         output += heroLine
 
+    # Return the dict object
     return output
 
 
