@@ -9,8 +9,6 @@ from dotenv import load_dotenv
 # import FaultFormat as fformat
 import logging
 
-from tables import Description
-
 # Set up logging
 logging.basicConfig(filename="FaultBot.log", format="[%(process)d] %(asctime)s - %(message)s", level=logging.INFO)
 
