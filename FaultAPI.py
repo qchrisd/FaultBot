@@ -161,3 +161,9 @@ def get_elo(playerID):
         page_dict = json.loads(page_json.decode('utf8'))
 
     return page_dict
+
+
+# Gets the stats per hero in the format https://api.playfault.com/getStatsPerHero
+# Returns a JSON object with the HeroID as the key
+def get_stats_per_hero():
+    pass

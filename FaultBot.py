@@ -5,16 +5,18 @@
 import os
 import discord
 from dotenv import load_dotenv
-import FaultAPI as f
-import FaultFormat as fformat
+# import FaultAPI as f
+# import FaultFormat as fformat
 import logging
+
+from tables import Description
 
 # Set up logging
 logging.basicConfig(filename="FaultBot.log", format="[%(process)d] %(asctime)s - %(message)s", level=logging.INFO)
 
 # Load the environmental variables from the .env file
 load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
+TOKEN = os.getenv('DISCORD_TOKEN_DEV')  # SET TO DEV TOKEN
 GUILD = os.getenv('DISCORD_GUILD')
 
 # Create the discord client
@@ -78,6 +80,10 @@ async def sendHeroes(message, messageParts):
     # print('Hero data requested')
     logging.info('Hero data requested')
 
+    # Import the proper modules
+    import FaultAPI as f
+    import FaultFormat as fformat
+
     # Sets default sortBy criteria
     sortBy = 'games'
     username = str(message.author).split('#')[0]
@@ -115,30 +121,37 @@ async def sendMatches(message, messageParts):
 
     # Logging
     logging.info('Match data requested')
-    # print("Match data requested")
 
+    # Initializes the sendback message
     matches = 'No matches found'
+
+    # Import the proper modules
+    import FaultAPI as f
+    import FaultFormat as fformat
 
     # No params given
     if len(messageParts) == 1:
-        matches = f.get_matches(f.get_id(str(message.author).split('#')[0]), 1)
+        uname_discord = str(message.author).split('#')[0]  # Get username from discord message
+        id_fault = f.get_id(uname_discord)  # Get fault ID from the API
+        matches = f.get_matches(id_fault, 1)  # Get last match information
     # 1 param given, should be a name
-    elif len(messageParts) == 2:
+    else:
         # TODO need to add type checking
         if isString(messageParts[1]):
-            matches = f.get_matches(f.get_id(messageParts[1]), 1)
+            id_fault = f.get_id(messageParts[1])  # Get fault ID from the API
+            matches = f.get_matches(id_fault, 1)  # Get last match information
         else:
             await message.channel.send("The player name you entered was not a string. Please try again.")
             return
-    # 2 or more params given, should be a name and number
-    else:
-        # TODO need to add type checking amd limit to 3
-        if int(messageParts[2]) > 3:
-            messageParts[2] = 3
-        matches = f.get_matches(f.get_id(messageParts[1]), messageParts[2])           
 
-    # Sends message to the discord
-    await message.channel.send(fformat.format_matches(matches))
+
+    # Creates a discord Embed object from a dictionary to send back ro messager
+    formatted_match = fformat.format_matches(matches, id_fault)
+    formatted_match['color'] = 0xBF00FF
+    embed = discord.Embed.from_dict(formatted_match)
+
+    # Sends the reply to the channel
+    await message.channel.send(embed=embed)
     return
 
 
@@ -149,6 +162,10 @@ async def send_elo(message, messageParts):
     logging.info('ELO data requested')
     # print('ELO data requested')
 
+    # Import the proper modules
+    import FaultAPI as f
+    import FaultFormat as fformat
+    
     # Message author is the user
     user = str(message.author).split('#')[0]
 
@@ -162,12 +179,31 @@ async def send_elo(message, messageParts):
     output = fformat.format_elo(player)
 
     # Send message
-    await(message.channel.send(output))
+    await message.channel.send(output)
     
 
 # Test the embed message functionality of discord
 async def send_embed(message, messageParts):
-    pass
+    
+    # Creating new test embed
+    test = discord.Embed(title='This is the first embed', 
+        description='this is the \n multiline description **with markdown**',
+        color=discord.Color.purple())
+
+    # Test the footer
+    test.set_footer(text='Test for a footer')
+    test.set_author(name='FaultBot')
+    test.add_field(name='test **field**', value='test **value** \n newline')
+    test.add_field(name='test *field* 2', value='value 2')
+    test.add_field(name='test field 3', value='value 3', inline=False)
+
+    print(test.to_dict())
+
+    # Test sending the embed
+    await message.channel.send(embed=test)
+
+
+
 
 
 # The message event that runs when a message is sent to the server

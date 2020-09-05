@@ -17,56 +17,69 @@ import FaultAPI as f
 
 
 # Format and return the matches requested using getMatches()
-# Returns a string
-def format_matches(matches):
+# Returns a title, description, and footer all as strings
+def format_matches(matches, player_id):
     # Checks for empty match record
     if matches == []:
         return('No matches found for that player ID')
 
-    # create the output string
-    output = ""
+    # Gets the match out of the dictionary
+    match = matches[0]
 
-    # Iterates through each match
-    for i, match in enumerate(matches):
-        # Inits some useful vars when formatting
-        team0 = []
-        team1 = []
-        AveELO0 = 0
-        AveELO1 = 0
+    # Gets winning team from the dictionary
+    if match['Winner'] == 0:
+        winner = 'Team 1'
+    else:
+        winner = 'Team 2'
 
-        # Adds the match length and match ID
-        output += '\n\nLength: {0} [ID: {1}]\n'.format(match['TimeLength'], str(match['ID']))
+    # Creates a dict object to return and adds the title, description, and footer
+    output = {}
+    output['title'] = f"Winners: {winner}"
+    output['description'] = f"Length: {match['TimeLength']} [ID: {str(match['ID'])}]"
+    output['footer'] = ""
+
+    # Creates useful structures for holding data for iterating for each player
+    team0 = []
+    team1 = []
+    AveELO0 = 0
+    AveELO1 = 0
+    
+    # Iterates through players in the match
+    for player in match['players']:
+        # Gets the player MMR information for the player
+        player_elo = f.get_elo(player['PlayerID'])
+
+        # Conditional formatting to make the requester stand out
+        if player['PlayerID'] == player_id:
+            player_string = '\n - **{0} ({1}: {2} *[{3} change]* ELO, Rank {4})**'.format(f.heroes[player['HeroID']], player['Username'], player_elo['MMR'], player["MMRChange"], player_elo['ranking'])
+        else:
+            player_string = '\n - **{0}** ({1}: {2} *[{3} change]* ELO, Rank {4})'.format(f.heroes[player['HeroID']], player['Username'], player_elo['MMR'], player["MMRChange"], player_elo['ranking'])
         
-        # Iterates through players in the match
-        for player in match['players']:
-            # Gets the player MMR information
-            player_elo = f.get_elo(player['PlayerID'])
-            # Creates a string to add to the output
-            player_string = '\n - {0} ({1}: {2} [{3} change] ELO, Rank {4})'.format(f.heroes[player['HeroID']], player['Username'], player_elo['MMR'], player["MMRChange"], player_elo['ranking'])
-            # Sorts players into teams and adds ELO
-            if player['Team'] == 0:
-                team0.append(player_string)
-                AveELO0 += player_elo['MMR']
-            else:
-                team1.append(player_string)
-                AveELO1 += player_elo['MMR']
-        
-        # Averages ELO across 5 players
-        AveELO0 = int(AveELO0/5)
-        AveELO1 = int(AveELO1/5)
+        # Sorts players into teams and totals ELO
+        if player['Team'] == 0:
+            team0.append(player_string)
+            AveELO0 += player_elo['MMR']
+        else:
+            team1.append(player_string)
+            AveELO1 += player_elo['MMR']
+    
+    # Averages ELO across 5 players
+    AveELO0 = int(AveELO0/5)
+    AveELO1 = int(AveELO1/5)
 
-        # Adds the teams to output with headers
-        output += 'Team 1 ({0} Average ELO):'.format(AveELO0)
-        for player in team0:
-            output += player
-        output += '\n\nTeam 2 ({0} Average ELO):'.format(AveELO1)
-        for player in team1:
-            output += player
+    # Creates the team titles and content for the output dictionary
+    team0_title = '**Team 1** ({0} Average ELO):'.format(AveELO0)
+    team0_players = ""
+    for player in team0:
+        team0_players += player
+    team1_title = '\n\n**Team 2** ({0} Average ELO):'.format(AveELO1)
+    team1_players = ""
+    for player in team1:
+        team1_players += player
+    
+    # Adds the fields to the output dictionary
+    output['fields'] = [{'name':team0_title, 'value':team0_players}, {'name':team1_title, 'value':team1_players}]
 
-        # adds a seperator for multiple matches
-        if i < len(matches)-1:
-            output += '\n\n-------------'
-        
     # return output string
     return output
 
