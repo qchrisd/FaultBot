@@ -16,7 +16,7 @@ logging.basicConfig(filename="FaultBot.log", format="[%(process)d] %(asctime)s -
 
 # Load the environmental variables from the .env file
 load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN_DEV')  # SET TO DEV TOKEN
+TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 
 # Create the discord client
