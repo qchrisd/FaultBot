@@ -5,6 +5,7 @@
 import os
 import discord
 from dotenv import load_dotenv
+    # Importing within each method probably should pull this back to normal
 # import FaultAPI as f
 # import FaultFormat as fformat
 import logging

@@ -27,7 +27,7 @@ def format_matches(matches, player_id):
     match = matches[0]
 
     # Gets winning team from the dictionary
-    if match['Winner'] == 0:
+    if match['winner'] == 0:
         winner = 'Team 1'
     else:
         winner = 'Team 2'
@@ -35,7 +35,7 @@ def format_matches(matches, player_id):
     # Creates a dict object to return and adds the title, description, and footer
     output = {}
     output['title'] = "Winners: {0}".format(winner)
-    output['description'] = "Length: {0} [ID: {1}]".format(match['TimeLength'], str(match['ID']))
+    output['description'] = "Length: {0} [ID: {1}]".format(match['timeLength'], str(match['id']))
     output['footer'] = ""
 
     # Creates useful structures for holding data for iterating for each player
@@ -47,16 +47,16 @@ def format_matches(matches, player_id):
     # Iterates through players in the match
     for player in match['players']:
         # Gets the player MMR information for the player
-        player_elo = f.get_elo(player['PlayerID'])
+        player_elo = f.get_elo(player['playerId'])
 
         # Conditional formatting to make the requester stand out
-        if player['PlayerID'] == player_id:
-            player_string = '\n - **{0} ({1}: {2} *[{3} change]* ELO, Rank {4})**'.format(f.heroes[player['HeroID']], player['Username'], player_elo['MMR'], player["MMRChange"], player_elo['ranking'])
+        if player['playerId'] == player_id:
+            player_string = '\n - **{0} ({1}: {2} *[{3} change]* ELO, Rank {4})**'.format(f.heroes[player['heroId']], player['username'], player_elo['MMR'], player["mmrChange"], player_elo['ranking'])
         else:
-            player_string = '\n - **{0}** ({1}: {2} *[{3} change]* ELO, Rank {4})'.format(f.heroes[player['HeroID']], player['Username'], player_elo['MMR'], player["MMRChange"], player_elo['ranking'])
+            player_string = '\n - **{0}** ({1}: {2} *[{3} change]* ELO, Rank {4})'.format(f.heroes[player['heroId']], player['username'], player_elo['MMR'], player["mmrChange"], player_elo['ranking'])
         
         # Sorts players into teams and totals ELO
-        if player['Team'] == 0:
+        if player['team'] == 0:
             team0.append(player_string)
             AveELO0 += player_elo['MMR']
         else:
