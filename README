@@ -12,3 +12,17 @@ To Do:
  - Refactor FaultBot.py to import the FaultAPI.py when information is asked for. This will allow for testing and maintenance while the bot is live.
  - Change the messaging function to embeded messages for better readability and formatting.
  - Add functinality to FaultAPI.py to collect hero pick rates and win rates.
+
+ # Fault API
+ Fault information that can be received
+  - Items (https://api.playfault.com/items)
+  - Search the leaderboards for a user by name (https://api.playfault.com/getTopPlayers/50/<User Name>)
+  - Search match history by player ID and number of matches (https://api.playfault.com/getMatches/<player ID>/<number of matches>)
+  - Gets the hero performance for a player ID (https://api.playfault.com/getPlayerHeroStats/<player ID>)
+  - Get the MMR information by player ID (https://api.playfault.com/getEloData/<player ID>)
+  - Get all hero performance and pick rates (https://api.playfault.com/getStatsPerHero) * can append /<Rank> to filter for Bronze, Silver, etc...
+  - Get hero portraits by hero ID (https://api.playfault.com/imagecdn/portraits/<Hero ID>.jpg)
+  - Get info for a specific hero by name (https://api.playfault.com/heroData/<Hero Name>)
+  - Get URL for player avatar by player ID (https://api.playfault.com/userAvatar/<player ID>) *avatarURI holds the link to the avatar
+  - Get an avatar by image ID (https://api.playfault.com/imagecdn/avatars/<Image ID>.jpg)
+
