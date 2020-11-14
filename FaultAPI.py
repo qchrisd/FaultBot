@@ -26,27 +26,6 @@ import json
 http = urllib3.PoolManager()
 
 
-# Heroes dictionary for reference
-heroes = {
-    2:'Twinblast',
-    3: 'Gideon',
-    4:'Kwang',
-    5:'Muriel',
-    6:'Khaimera',
-    7: 'Sevarog',
-    8: 'Murdock',
-    9: 'Countess',
-    10: 'Lt. Belica',
-    11: 'Greystone',
-    12: 'Narbash',
-    13: 'Steel',
-    14: 'Boris',
-    15: 'Sparrow',
-    16: 'Dekker',
-    17: 'Grim.exe'
-    }
-
-
 # Gets the list of items from the website
 # Returns a dict
 def get_items():
@@ -165,5 +144,26 @@ def get_elo(playerID):
 
 # Gets the stats per hero in the format https://api.playfault.com/getStatsPerHero
 # Returns a JSON object with the HeroID as the key
-def get_stats_per_hero():
-    pass
+def get_hero_stats():
+
+    """Gets hero statistics and creates a dictionary of heroes for use elsewhere"""
+
+    # Get the hero dictionary from the API as a JSON object
+    page_link = 'https://api.playfault.com/getStatsPerHero'
+    page_json = http.request("GET", page_link).data
+    # Parse the json string into a dictionary
+    try:
+        page_dict = json.loads(page_json)
+    except:
+        page_dict = json.loads(page_json.decode('utf8'))
+    
+    # Return the dictionary
+    return page_dict['heroes']
+
+
+# Collects the list of heroes with integer Hero IDs and string names
+# This will allow for a simple restart when new heroes are added to the game
+hero_stats = get_hero_stats()
+heroes = {}
+for key, val in hero_stats.items():
+    heroes[val["Id"]] = key
