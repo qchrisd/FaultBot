@@ -49,11 +49,17 @@ def format_matches(matches, player_id):
         # Gets the player MMR information for the player
         player_elo = f.get_elo(player['playerId'])
 
+        # Gets hero name with unidentified checking
+        try:
+            hero_played = f.heroes[player['heroId']]
+        except:
+            hero_played = "Unknown"
+
         # Conditional formatting to make the requester stand out
         if player['playerId'] == player_id:
-            player_string = '\n - **{0} ({1}: {2} *[{3} change]* ELO, Rank {4})**'.format(f.heroes[player['heroId']], player['username'], player_elo['MMR'], player["mmrChange"], player_elo['ranking'])
+            player_string = '\n - **{0} ({1}: {2} *[{3} change]* ELO, Rank {4})**'.format(hero_played, player['username'], player_elo['MMR'], player["mmrChange"], player_elo['ranking'])
         else:
-            player_string = '\n - **{0}** ({1}: {2} *[{3} change]* ELO, Rank {4})'.format(f.heroes[player['heroId']], player['username'], player_elo['MMR'], player["mmrChange"], player_elo['ranking'])
+            player_string = '\n - **{0}** ({1}: {2} *[{3} change]* ELO, Rank {4})'.format(hero_played, player['username'], player_elo['MMR'], player["mmrChange"], player_elo['ranking'])
         
         # Sorts players into teams and totals ELO
         if player['team'] == 0:
