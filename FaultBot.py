@@ -208,12 +208,17 @@ async def send_embed(message, messageParts):
 # The message event that runs when a message is sent to the server
 @client.event
 async def on_message(message):
+
     # prevents running event for self posts
     if message.author == client.user:
         return
 
     # Split the message into parts
     messageParts = message.content.split()
+    
+    # Checks for a message to read
+    if not messageParts:
+        return
 
     # Send help message
     if messageParts[0] == '!help':
