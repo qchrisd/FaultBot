@@ -52,8 +52,8 @@ def format_matches(matches, player_id):
         # Gets hero name with unidentified checking
         try:
             hero_played = f.heroes[player['heroId']]
-        except:
-            hero_played = "Unknown"
+        except KeyError as e:
+            hero_played = "Hero not in HeroStats"
 
         # Conditional formatting to make the requester stand out
         if player['playerId'] == player_id:
