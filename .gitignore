@@ -2,3 +2,9 @@
 *.pyc
 *.code-workspace
 *.log
+*.json
+test.py
+
+# IDE files
+**/.idea
+FaultBot.log
