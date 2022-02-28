@@ -16,154 +16,209 @@ To Do:
 - hero win statistics and pick rates
 - Document aspect labels
 
+Last Update: 2/287/2022
+
 '''
 
-# Import dependencies
+
+## Import dependencies
 import urllib3
 import json
 
-# create urllib3 pool manager for requests
-http = urllib3.PoolManager()
+
+## Utilities
+def _decode_json(json_data):
+    """
+    Decodes json binary data and returns a dictionary.
+    """
+    
+#    try:
+    dict = json.loads(json_data)
+    """    
+    except:
+        dict = json.loads(json_data.decode('utf8'))
+    """
+    return dict
 
 
-# Gets the list of items from the website
-# Returns a dict
+def _query_website(url):
+    """
+    Returns a JSON object from a website query.
+    """
+
+    http = _create_pool_manager()
+    page = http.request("GET", url)
+    page_data = page.data
+    print(page_data)
+    page_json = _decode_json(page_data)
+
+    return page_json
+
+
+def _create_pool_manager():
+    """
+    Creates a pool manager for website queries.
+    """
+
+    return urllib3.PoolManager()
+
+
+def _startup():
+    """
+    Creates global variables.
+    """
+
+    pass
+
+
+def _create_hero_dicts():
+
+    """Creates a dictionary with the hero ID as keys and their names as values"""
+    
+    hero_stats = get_hero_play_stats()
+    hero_to_id = {}
+    id_to_hero = {}
+
+    for key, val in hero_stats.items():
+        hero_to_id[val["Id"]] = key
+        id_to_hero[key] = val["Id"]
+    
+    return hero_to_id, id_to_hero
+
+
+def _get_user_id(user):
+    """
+    Returns a player's ID given a username.
+
+    """
+
+    user = get_user(user, _query_website)
+
+    if user == -1:
+        return user
+    
+    return user["id"]
+
+
+## Public methods
+def get_hero_play_stats():
+    """
+    Gets the stats per hero in the format https://api.playfault.com/getStatsPerHero
+    Returns a JSON object with the HeroID as the key
+    """
+
+    page_link = 'https://api.playfault.com/getStatsPerHero'
+    page_dict = _query_website(page_link)
+    
+    return page_dict['heroes']
+
+
+def get_hero_info(hero):
+    """
+    Gets the information for a given hero.
+    """
+
+    page_link = f"https://api.playfault.com/heroData/{hero}"
+    page_json = _query_website(page_link)
+
+    return page_json
+
+
 def get_items():
-    """Gets the list of items from the website."""
+    """
+    Gets the list of items from the website.
+    Returns a dict.
+    
+    """
 
     # Gets information from the website
     items_link = "https://api.playfault.com/items"
-    items_json = http.request('GET', items_link).data
-    try:
-        items = json.loads(items_json)
-    except:
-        items = json.loads(items_json.decode('utf8'))
+    items = _query_website(items_link)
 
     return items
 
 
-# Gets player ID from a username
-# Returns an int
-def get_id(user):
-    """ Returns a player ID from a username. Returns -1 if the username is not found."""
-    
-    # Get the player ID JSON from the website
-    page_link = 'https://api.playfault.com/getTopPlayers/50/{0}'.format(user)
-    page_json = http.request("GET", page_link).data
-    try:
-        page_dict = json.loads(page_json)
-    except:
-        page_dict = json.loads(page_json.decode('utf8'))
-    # Attemt to get the ID from the json
-    try:
-        id = page_dict['players'][0]['id']
-    except:
-        id = -1
-    
-    return(id)
-
-
-# Gets match data in the format https://api.playfault.com/getMatches/<player ID>/<number of matches>
-# Returns a list of dicts
-def get_matches(id, n):
-    """Gets match data for N matches for a given player ID. Returns a blank list if player ID not found."""
-    
-    # Check if the ID is good
-    if id == -1:
-        return []
-
-    # Get the match info from the website
-    page_link = 'https://api.playfault.com/getMatches/{0}/{1}'.format(id, n)
-    page_json = http.request("GET", page_link).data
-    try:
-        page_dict = json.loads(page_json)['matches']
-    except:
-        page_dict = json.loads(page_json.decode('utf8'))['matches']
-    
-    return page_dict
-
-
-# Gets player hero data in the format https://api.playfault.com/getPlayerHeroStats/<player ID>
-# Returns a list of dicts
-def get_heroes(id):
-    """Gets hero statistics for a specified player ID. Returns a blank list if player ID is not found."""
-
-    # Check that the ID is good
-    if id == -1:
-        return []
-    
-    # Collect info from Fault website and convert json to dict
-    page_link = 'https://api.playfault.com/getPlayerHeroStats/{0}'.format(id)
-    page_json = http.request("GET", page_link).data
-    try:
-        page_dict = json.loads(page_json)['heroes']
-    except:
-        page_dict = json.loads(page_json.decode('utf8'))['heroes']
-    
-    # Flatten dict into a list of dicts, one for each hero
-    hero_dict = []
-    for key, value in page_dict.items():
-        # Cast key to int because json hero keys arrive as str
-        try:
-            hName = heroes[int(key)] if int(key) in heroes else 'Not Found'
-        except ValueError:
-            hName = 'Hero key invalid'
-        value['hero'] = hName
-        hero_dict.append(value)
-    
-    return hero_dict
-
-
-# Gets ELO data of a player in the format https://api.playfault.com/getEloData/<player ID>
-# Returns a dict
-def get_elo(playerID):
-    """Gets the MMR and ELO information for an ID. Returns a blank list if the player ID is not found.
-    
-    Returns a dict with the following:
-    - id (str)
-    - username (str)
-    - eloTitle (str)
-    - MMR (float)
-    - ranking (int)
+def get_user(user, query_website_fn):
+    """ 
+    Returns a player's information from a username as a dict.
+    Returns -1 if the username is not found.
     """
     
-    # Check if the player ID is good
-    if playerID == -1:
-        return []
+    page_link = f'https://api.playfault.com/getTopPlayers/1/{user}'
+#    page_dict = _query_website(page_link)
+    page_dict = query_website_fn(page_link)
+    
+    # Check success
+    if page_dict['success']:
+        user = page_dict['players'][0]
+    else:
+        user = -1
+
+    return user
+
+
+def get_match(user):
+    """
+    Gets the last match for a given player.
+    Returns  -1 if no matches were found.
+    """
+    
+    user_id = _get_user_id(user)
+
+    # Check if the ID is good
+    if user_id == -1:
+        return user_id
+
+    page_link = f'https://api.playfault.com/getMatches/{user_id}/1'
+    page_dict = _query_website(page_link)
+    match = page_dict["matches"][0]
+
+    return match
+
+
+def get_player_hero_stats(user):
+    """
+    Gets hero statistics for a specified user.
+    Returns -1 if the player is not found"""
+
+    user_id = _get_user_id(user)
+
+    if user_id == -1:
+        return user_id
+    
+    # Collect info from Fault website and convert json to dict
+    page_link = f'https://api.playfault.com/getPlayerHeroStats/{user_id}'
+    page_dict = _query_website(page_link)
+    player_hero_stats = page_dict["heroes"]
+
+    return player_hero_stats
+
+
+def get_elo(user):
+    """
+    Gets the MMR and ELO information for an ID. 
+    Returns a dict.
+    Returns -1 if no user is found
+    """
+
+    user_id = _get_user_id(user)
+
+    if user_id == -1:
+        return user_id
 
     # Gets the information from the website
-    page_link = 'https://api.playfault.com/getEloData/{0}'.format(playerID)
-    page_json = http.request("GET", page_link).data
-    try:
-        page_dict = json.loads(page_json)
-    except:
-        page_dict = json.loads(page_json.decode('utf8'))
+    page_link = f'https://api.playfault.com/getEloData/{user_id}'
+    page_json = _query_website(page_link)
 
-    return page_dict
+    return page_json
 
 
-# Gets the stats per hero in the format https://api.playfault.com/getStatsPerHero
-# Returns a JSON object with the HeroID as the key
-def get_hero_stats():
-
-    """Gets hero statistics and creates a dictionary of heroes for use elsewhere"""
-
-    # Get the hero dictionary from the API as a JSON object
-    page_link = 'https://api.playfault.com/getStatsPerHero'
-    page_json = http.request("GET", page_link).data
-    # Parse the json string into a dictionary
-    try:
-        page_dict = json.loads(page_json)
-    except:
-        page_dict = json.loads(page_json.decode('utf8'))
-    
-    # Return the dictionary
-    return page_dict['heroes']
 
 
-# Collects the list of heroes with integer Hero IDs and string names
-# This will allow for a simple restart when new heroes are added to the game
-hero_stats = get_hero_stats()
-heroes = {}
-for key, val in hero_stats.items():
-    heroes[val["Id"]] = key
+if __name__ == '__main__':
+    print("File called directly.")
+    _startup()
+    print(get_user("qchrisd",_query_website))
+
+else:
+    _startup()
