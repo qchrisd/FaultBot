@@ -11,22 +11,29 @@ import unittest
 from unittest.mock import MagicMock
 
 # Import methods
-from FaultAPI import _create_pool_manager, _decode_json, get_user, sanitize_fault_user_response
+from FaultAPI import _create_pool_manager, _decode_json, _check_user_request_response
 from FaultAPI import _create_hero_dicts
 
 # Test case
 class FaultAPIRequestTest(unittest.TestCase):
+    
+    def test_decode_json(self):
+        actual = _decode_json(b'{"id":"29016","username":"qchrisd","eloTitle":"Silver","MMR":1223.1,"ranking":1129,"placementGamesRemain":0}')
+        self.assertEqual(actual['id'], "29016")
+    
+
     def test_create_pool_manager(self):
         import urllib3
         self.assertIsInstance(_create_pool_manager(), urllib3.PoolManager)
 
-    def test_decode_json(self):
-        actual = _decode_json(b'{"id":"29016","username":"qchrisd","eloTitle":"Silver","MMR":1223.1,"ranking":1129,"placementGamesRemain":0}')
-        self.assertEqual(actual['id'], "29016")
 
     def test_sanitize_fault_user_response(self):
-        actual = sanitize_fault_user_response({"success":False})
-        self.assertEqual(actual, -1)
+        actual_success = _check_user_request_response({"success":True, "players":{0:{"id":29016}}})
+        self.assertEqual(actual_success, {"id":29016})
+
+        actual_failure = _check_user_request_response({"success":False})
+        self.assertEqual(actual_failure, -1)
+
 
     def test_create_hero_dicts(self):
         actual_hero_to_id, actual_id_to_hero = _create_hero_dicts({"Twinblast":{"Id":2}})
