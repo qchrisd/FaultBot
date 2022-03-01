@@ -176,7 +176,7 @@ def get_aspects():
     return aspects
 
 
-def get_match(user):
+def get_matches(user, n = 1):
     """
     Gets the last match for a given player.
     Returns  -1 if no matches were found.
@@ -188,7 +188,7 @@ def get_match(user):
     if user_id == -1:
         return user_id
 
-    page_link = f'https://api.playfault.com/getMatches/{user_id}/1'
+    page_link = f'https://api.playfault.com/getMatches/{user_id}/{n}'
     page_dict = _query_website(page_link)
     match = page_dict["matches"][0]
 
