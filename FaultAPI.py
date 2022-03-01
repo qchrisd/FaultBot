@@ -195,6 +195,18 @@ def get_matches(user, n = 1):
     return match
 
 
+def get_match_data(match_id):
+    """
+    Gets match data from the website.
+    Returns a dict.
+    """
+
+    page_link = f'https://api.playfault.com/getMatchData/{match_id}'
+    match = _query_website(page_link)
+
+    return match
+
+
 def get_player_hero_stats(user):
     """
     Gets hero statistics for a specified user.
@@ -238,5 +250,6 @@ def get_elo(user):
 if __name__ == '__main__':
     print("File called directly.")
     _startup()
+    print(get_match_data(766814))
 else:
     _startup()
