@@ -245,11 +245,41 @@ def get_elo(user):
     return page_json
 
 
+## Image API
+def get_image_hero_ability(hero, ability):
+    """
+    Gets the image of a hero ability.
+    Returns a png.
+    TODO
+    """
+
+    image_link = f"https://api.playfault.com/imagecdn/abilities/{hero}/{ability}.png"
+
+
+def get_image_item(item_id):
+    """
+    Gets the image of a hero ability.
+    Returns a jpg.
+    TODO
+    """
+
+    image_link = f"https://api.playfault.com/imagecdn/items/{item_id}.jpg"
+
+
+def get_image_hero_portrait(hero_id):
+    """
+    Gets the image of a hero ability.
+    Returns a jpg.
+    TODO
+    """
+
+    image_link = f"https://api.playfault.com/imagecdn/portraits/{hero_id}.jpg"
+
 
 
 if __name__ == '__main__':
     print("File called directly.")
     _startup()
-    print(get_match_data(766814))
+    print(get_image_hero_ability("Steel", "R"))
 else:
     _startup()
