@@ -163,6 +163,19 @@ def get_items():
     return items
 
 
+def get_aspects():
+    """
+    Gets the list of aspects.
+    Returns a dict.
+    """
+
+    # Gets information from the website
+    aspects_link = "https://api.playfault.com/aspects"
+    aspects = _query_website(aspects_link)
+
+    return aspects
+
+
 def get_match(user):
     """
     Gets the last match for a given player.
