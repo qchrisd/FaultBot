@@ -280,6 +280,5 @@ def get_image_hero_portrait(hero_id):
 if __name__ == '__main__':
     print("File called directly.")
     _startup()
-    print(get_image_hero_ability("Steel", "R"))
 else:
     _startup()
