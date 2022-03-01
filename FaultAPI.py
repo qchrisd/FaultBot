@@ -97,6 +97,35 @@ def _create_hero_dicts(hero_stats = _get_hero_play_stats()):
     return hero_to_id, id_to_hero
 
 
+def _check_user_request_response(page_dict):
+    """
+    Check to see if the request for a player was successful.
+    Returns the user JSON if successful.
+    Returns -1 if unsuccessful.
+    """
+
+    if page_dict['success']:
+        user = page_dict['players'][0]
+    else:
+        user = -1
+    
+    return user
+
+
+def _get_user(user):
+    """ 
+    Returns a player's information from a username as a dict.
+    Returns -1 if the username is not found.
+    """
+    
+    page_link = f'https://api.playfault.com/getTopPlayers/1/{user}'
+    page_dict = _query_website(page_link)
+    
+    user = _check_user_request_response(page_dict)
+
+    return user
+
+
 def _get_user_id(user):
     """
     Returns a player's ID given a username.
@@ -140,27 +169,9 @@ def get_items():
     return items
 
 
-def sanitize_fault_user_response(page_dict):
-        # Check success
-    if page_dict['success']:
-        user = page_dict['players'][0]
-    else:
-        user = -1
-    
-    return user
 
-def get_user(user):
-    """ 
-    Returns a player's information from a username as a dict.
-    Returns -1 if the username is not found.
-    """
-    
-    page_link = f'https://api.playfault.com/getTopPlayers/1/{user}'
-    page_dict = _query_website(page_link)
-    
-    user = sanitize_fault_user_response(page_dict)
 
-    return user
+
 
 
 def get_match(user):
