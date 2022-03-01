@@ -49,7 +49,6 @@ def _query_website(url):
     http = _create_pool_manager()
     page = http.request("GET", url)
     page_data = page.data
-    print(page_data)
     page_json = _decode_json(page_data)
 
     return page_json
@@ -71,32 +70,6 @@ def _startup():
     pass
 
 
-def _get_hero_play_stats():
-    """
-    Gets the stats per hero in the format https://api.playfault.com/getStatsPerHero
-    Returns a JSON object with the HeroID as the key
-    """
-
-    page_link = 'https://api.playfault.com/getStatsPerHero'
-    page_dict = _query_website(page_link)
-    
-    return page_dict['heroes']
-
-
-def _create_hero_dicts(hero_stats = _get_hero_play_stats()):
-
-    """Creates a dictionary with the hero ID as keys and their names as values"""
-    
-    hero_to_id = {}
-    id_to_hero = {}
-
-    for key, val in hero_stats.items():
-        id_to_hero[val["Id"]] = key
-        hero_to_id[key] = val["Id"]
-    
-    return hero_to_id, id_to_hero
-
-
 def _check_user_request_response(page_dict):
     """
     Check to see if the request for a player was successful.
@@ -112,7 +85,34 @@ def _check_user_request_response(page_dict):
     return user
 
 
-def _get_user(user):
+## Main
+def get_hero_play_stats():
+    """
+    Gets the stats per hero in the format https://api.playfault.com/getStatsPerHero
+    Returns a JSON object with the HeroID as the key
+    """
+
+    page_link = 'https://api.playfault.com/getStatsPerHero'
+    page_dict = _query_website(page_link)
+    
+    return page_dict['heroes']
+
+
+def get_hero_dicts(hero_stats = get_hero_play_stats()):
+
+    """Creates a dictionary with the hero ID as keys and their names as values"""
+    
+    hero_to_id = {}
+    id_to_hero = {}
+
+    for key, val in hero_stats.items():
+        id_to_hero[val["Id"]] = key
+        hero_to_id[key] = val["Id"]
+    
+    return hero_to_id, id_to_hero
+
+
+def get_user(user):
     """ 
     Returns a player's information from a username as a dict.
     Returns -1 if the username is not found.
@@ -126,10 +126,9 @@ def _get_user(user):
     return user
 
 
-def _get_user_id(user):
+def get_user_id(user):
     """
     Returns a player's ID given a username.
-
     """
 
     user = get_user(user)
@@ -138,10 +137,6 @@ def _get_user_id(user):
         return user
     
     return user["id"]
-
-
-## Public methods
-
 
 
 def get_hero_info(hero):
@@ -159,7 +154,6 @@ def get_items():
     """
     Gets the list of items from the website.
     Returns a dict.
-    
     """
 
     # Gets information from the website
@@ -169,18 +163,13 @@ def get_items():
     return items
 
 
-
-
-
-
-
 def get_match(user):
     """
     Gets the last match for a given player.
     Returns  -1 if no matches were found.
     """
     
-    user_id = _get_user_id(user)
+    user_id = get_user_id(user)
 
     # Check if the ID is good
     if user_id == -1:
@@ -196,9 +185,10 @@ def get_match(user):
 def get_player_hero_stats(user):
     """
     Gets hero statistics for a specified user.
-    Returns -1 if the player is not found"""
+    Returns -1 if the player is not found.
+    """
 
-    user_id = _get_user_id(user)
+    user_id = get_user_id(user)
 
     if user_id == -1:
         return user_id
@@ -218,7 +208,7 @@ def get_elo(user):
     Returns -1 if no user is found
     """
 
-    user_id = _get_user_id(user)
+    user_id = get_user_id(user)
 
     if user_id == -1:
         return user_id
@@ -235,7 +225,5 @@ def get_elo(user):
 if __name__ == '__main__':
     print("File called directly.")
     _startup()
-    #_query_website('https://api.playfault.com/getEloData/29016')
-    print(_get_hero_play_stats())
 else:
     _startup()
