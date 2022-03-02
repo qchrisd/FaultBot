@@ -4,6 +4,7 @@
 *.log
 *.json
 test.py
+tempCodeRunnerFile.py
 
 # IDE files
 **/.idea
