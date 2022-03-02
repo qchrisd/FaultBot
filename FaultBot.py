@@ -50,7 +50,7 @@ def isInt(datum):
         return False
 
 
-
+# Logging for bot startup functions
 @bot.event
 async def on_connect():
     """
@@ -67,6 +67,11 @@ async def on_ready():
     """
 
     logging.info(f'{bot.user} is ready to recieve commands.')
+
+
+# Cog for slash_command()s
+class cog_commands(slash_util.Cog):
+    pass
 
 # Sends hero data to the discord
 async def sendHeroes(message, messageParts):
