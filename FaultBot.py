@@ -1,48 +1,37 @@
+"""
+This file contains and runs the Discord bot.
+
+Methods include watching for commands and messaging information to users.
+
+Written by Chris Quartararo
+Last update 3/1/2022
+
+"""
+
 # The fault bot that will upload fault data to the discord
 # Requires python-dotenv
 
 # Import the dependencies
 import os
-import discord
+import discord  # v1.7.3
 from dotenv import load_dotenv
     # Importing within each method probably should pull this back to normal
 # import FaultAPI as f
 # import FaultFormat as fformat
 import logging
+from constants import helpMessage
 
 # Set up logging
 logging.basicConfig(filename="FaultBot.log", format="[%(process)d] %(asctime)s - %(message)s", level=logging.INFO)
 
 # Load the environmental variables from the .env file
 load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
+TOKEN = os.getenv('DISCORD_TOKEN_DEV')
 GUILD = os.getenv('DISCORD_GUILD')
 
 # Create the discord client
 client = discord.Client()
 
-# Help text for the bot
-helpMessage = """**Welcome to the Support Squad fault bot!**
-I'm still under development so please be patient with me.
-
-I can help with the following things:
-
-**!help** - gives you this chat. You knew this one already!
-
-**!matches _<username> <n matches>_** - gives you the last n matches for the specified fault user. I don't know how many matches discord will allow me to send but I should be good for at least 2!
-
-**!heroes _<username> <sort>_** - gives you the hero information for the specified user sorted.
-You may sort by the following criteria:
-- games
-- kills
-- deaths
-- assists
-- name
-
-**!elo _<username>_** - Gets the specified player's MMR information.
-
-More functionality is on the way!
-"""
 
 ## Utility methods
 def isString(datum):
@@ -61,8 +50,7 @@ def isInt(datum):
 # The on ready event for when the bot logs into the server
 @client.event
 async def on_ready():
-        # print('{0} has successfully connected to Discord'.format(client.user))
-        logging.info('{0} has successfully connected to Discord'.format(client.user))
+        logging.info(f'{client.user} has successfully connected to Discord')
 
 # Sends hero data to the discord
 async def sendHeroes(message, messageParts):
