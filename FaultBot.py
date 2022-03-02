@@ -56,7 +56,7 @@ async def on_ready():
 # Cog for slash_command()s
 class cog_commands(slash_util.Cog):
 
-    @slash_util.slash_command(guild_id=GUILD)
+    @slash_util.slash_command(guild_id=GUILD, name="register")
     async def register_fault_username(self, ctx):
         pass
 

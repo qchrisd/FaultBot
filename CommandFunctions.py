@@ -6,6 +6,10 @@ Written by Chris Quartararo
 """
 
 def register_fault_username(ctx):
+
+    import FaultAPI
+
+    
     pass
 
 def match_info(ctx):
