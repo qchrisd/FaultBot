@@ -27,7 +27,7 @@ class FaultAPIRequestTest(unittest.TestCase):
         self.assertIsInstance(_create_pool_manager(), urllib3.PoolManager)
 
 
-    def test_sanitize_fault_user_response(self):
+    def test_check_user_request_response(self):
         actual_success = _check_user_request_response({"success":True, "players":{0:{"id":29016}}})
         self.assertEqual(actual_success, {"id":29016})
 
