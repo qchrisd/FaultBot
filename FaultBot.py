@@ -55,6 +55,12 @@ async def on_ready():
 
 # Cog for slash_command()s
 class cog_commands(slash_util.Cog):
+
+    @slash_util.slash_command(guild_id=GUILD)
+    async def register_fault_username(self, ctx):
+        pass
+
+
     @slash_util.slash_command(guild_id=GUILD)
     async def send_test_embed(self, ctx):
         # Creating new test embed
@@ -75,9 +81,9 @@ class cog_commands(slash_util.Cog):
         await ctx.send(embed=test)
 
 
-    @slash_util.slash_command(guild_id=GUILD)
+    @slash_util.slash_command(guild_id=GUILD, name="match")
     async def match_info(self, ctx):
-        test_string = functions.match_info()
+        test_string = functions.match_info(ctx)
         await ctx.send(test_string)
 
 # Sends hero data to the discord
