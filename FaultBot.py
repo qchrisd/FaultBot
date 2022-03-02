@@ -11,14 +11,17 @@ Last update 3/1/2022
 # The fault bot that will upload fault data to the discord
 # Requires python-dotenv
 
-# Import the dependencies
+# Import packages
 import os
-import discord  # v1.7.3
 from dotenv import load_dotenv
-    # Importing within each method probably should pull this back to normal
-# import FaultAPI as f
-# import FaultFormat as fformat
 import logging
+
+# Import discord stuff
+# discord.py 2.0.0 found at (git+https://github.com/Rapptz/discord.py) is required to use slash_util
+import discord  # v2.0.0
+import slash_util  # Handles new slash command and bot creation
+
+# Import custom modules
 from constants import helpMessage
 
 # Set up logging
@@ -30,7 +33,8 @@ TOKEN = os.getenv('DISCORD_TOKEN_DEV')
 #GUILD = os.getenv('DISCORD_GUILD')
 
 # Create the discord client
-client = discord.Client()
+#client = discord.Client()
+client = commands.Bot(command_prefix="/")
 
 
 ## Utility methods
@@ -202,10 +206,13 @@ async def send_embed(message, messageParts):
     # Test sending the embed
     await message.channel.send(embed=test)
 
+@slash_util.slash_command(guild_id=740376813120782367)
+async def blep(self, ctx):
+    logging.info("Test command recieved.")
+    await ctx.send("Successfully called command")
 
 
-
-
+"""
 # The message event that runs when a message is sent to the server
 @client.event
 async def on_message(message):
@@ -241,6 +248,7 @@ async def on_message(message):
     # Message embed tests
     if messageParts[0] == '!embed':
         await send_embed(message, messageParts)
+"""
 
 # Runs the client
 client.run(TOKEN)
