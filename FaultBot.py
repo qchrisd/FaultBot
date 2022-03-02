@@ -27,7 +27,7 @@ logging.basicConfig(filename="FaultBot.log", format="[%(process)d] %(asctime)s -
 # Load the environmental variables from the .env file
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN_DEV')
-GUILD = os.getenv('DISCORD_GUILD')
+#GUILD = os.getenv('DISCORD_GUILD')
 
 # Create the discord client
 client = discord.Client()
@@ -47,10 +47,23 @@ def isInt(datum):
         return False
 
 
-# The on ready event for when the bot logs into the server
+
+@client.event
+async def on_connect():
+    """
+    Runs when bot is connected to a server.
+    """
+
+    logging.info(f'{client.user} has successfully connected to Discord in server {client.guilds}.')
+
+
 @client.event
 async def on_ready():
-        logging.info(f'{client.user} has successfully connected to Discord')
+    """
+    Runs when the bot is fully functional and is ready to start being a bot.
+    """
+
+    logging.info(f'{client.user} is ready to recieve commands.')
 
 # Sends hero data to the discord
 async def sendHeroes(message, messageParts):
