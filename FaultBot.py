@@ -36,20 +36,6 @@ TOKEN = os.getenv('DISCORD_TOKEN_DEV')
 bot = slash_util.Bot(command_prefix="/")
 
 
-## Utility methods
-def isString(datum):
-    if type(datum) == str:
-        return True
-    else:
-        return False
-
-def isInt(datum):
-    if type(datum) == int:
-        return True
-    else:
-        return False
-
-
 # Logging for bot startup functions
 @bot.event
 async def on_connect():
@@ -210,49 +196,6 @@ async def send_embed(message, messageParts):
     # Test sending the embed
     await message.channel.send(embed=test)
 
-@slash_util.slash_command(guild_id=740376813120782367)
-async def blep(self, ctx):
-    logging.info("Test command recieved.")
-    await ctx.send("Successfully called command")
-
-
-"""
-# The message event that runs when a message is sent to the server
-@bot.event
-async def on_message(message):
-
-    # prevents running event for self posts
-    if message.author == bot.user:
-        return
-
-    # Split the message into parts
-    messageParts = message.content.split()
-    
-    # Checks for a message to read
-    if not messageParts:
-        return
-
-    # Send help message
-    if messageParts[0] == '!help':
-        logging.info('Help requested')
-        await message.channel.send(helpMessage)
-        return
-
-    if messageParts[0] == '!heroes':
-        await sendHeroes(message, messageParts)
-
-    # If the message is requesting matches
-    if messageParts[0] == '!matches':
-        await sendMatches(message, messageParts)
-
-    # Message requests elo information
-    if messageParts[0] == '!elo':
-        await send_elo(message, messageParts)
-
-    # Message embed tests
-    if messageParts[0] == '!embed':
-        await send_embed(message, messageParts)
-"""
 
 # Runs the bot
 bot.run(TOKEN)
