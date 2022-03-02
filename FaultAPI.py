@@ -16,7 +16,7 @@ To Do:
 - hero win statistics and pick rates
 - Document aspect labels
 
-Last Update: 2/287/2022
+Last Update: 3/1/2022
 
 '''
 
