@@ -4,7 +4,6 @@ This file contains and runs the Discord bot.
 Methods include watching for commands and messaging information to users.
 
 Written by Chris Quartararo
-Last update 3/1/2022
 
 """
 
@@ -20,6 +19,7 @@ import slash_util  # Requires discord.py 2.0.0+
 
 # Import custom modules
 from constants import helpMessage
+import CommandFunctions as functions
 
 
 # Set up logging
@@ -74,6 +74,11 @@ class cog_commands(slash_util.Cog):
         # Test sending the embed
         await ctx.send(embed=test)
 
+
+    @slash_util.slash_command(guild_id=GUILD)
+    async def match_info(self, ctx):
+        test_string = functions.match_info()
+        await ctx.send(test_string)
 
 # Sends hero data to the discord
 async def sendHeroes(message, messageParts):
