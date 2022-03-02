@@ -8,18 +8,15 @@ Last update 3/1/2022
 
 """
 
-# The fault bot that will upload fault data to the discord
-# Requires python-dotenv
 
 # Import packages
 import os
-from dotenv import load_dotenv
+from dotenv import load_dotenv  # Package titled python-dotenv
 import logging
 
 # Import discord stuff
-# discord.py 2.0.0 found at (git+https://github.com/Rapptz/discord.py) is required to use slash_util
-import discord  # v2.0.0
-import slash_util  # Handles new slash command and bot creation
+import discord  # v2.0.0 found at (git+https://github.com/Rapptz/discord.py)
+import slash_util  # Requires discord.py 2.0.0+
 
 # Import custom modules
 from constants import helpMessage
