@@ -32,9 +32,8 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN_DEV')
 #GUILD = os.getenv('DISCORD_GUILD')
 
-# Create the discord client
-#client = discord.Client()
-client = commands.Bot(command_prefix="/")
+# Create the discord bot
+bot = slash_util.Bot(command_prefix="/")
 
 
 ## Utility methods
@@ -52,22 +51,22 @@ def isInt(datum):
 
 
 
-@client.event
+@bot.event
 async def on_connect():
     """
     Runs when bot is connected to a server.
     """
 
-    logging.info(f'{client.user} has successfully connected to Discord in server {client.guilds}.')
+    logging.info(f'{bot.user} has successfully connected to Discord in server {bot.guilds}.')
 
 
-@client.event
+@bot.event
 async def on_ready():
     """
     Runs when the bot is fully functional and is ready to start being a bot.
     """
 
-    logging.info(f'{client.user} is ready to recieve commands.')
+    logging.info(f'{bot.user} is ready to recieve commands.')
 
 # Sends hero data to the discord
 async def sendHeroes(message, messageParts):
@@ -214,11 +213,11 @@ async def blep(self, ctx):
 
 """
 # The message event that runs when a message is sent to the server
-@client.event
+@bot.event
 async def on_message(message):
 
     # prevents running event for self posts
-    if message.author == client.user:
+    if message.author == bot.user:
         return
 
     # Split the message into parts
@@ -250,7 +249,7 @@ async def on_message(message):
         await send_embed(message, messageParts)
 """
 
-# Runs the client
-client.run(TOKEN)
+# Runs the bot
+bot.run(TOKEN)
 
 
