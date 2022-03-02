@@ -20,7 +20,7 @@ logging.basicConfig(filename="FaultBot.log", format="[%(process)d] %(asctime)s -
 TOKEN = os.getenv("DISCORD_TOKEN_DEV")
 
 # Create bot
-bot = commands.Bot(command_prefix="/")
+bot = slash_util.Bot(command_prefix="/")
 
 # Try a cog
 class test_cog(slash_util.Cog):
