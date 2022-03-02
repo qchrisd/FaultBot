@@ -21,13 +21,14 @@ import slash_util  # Requires discord.py 2.0.0+
 # Import custom modules
 from constants import helpMessage
 
+
 # Set up logging
 logging.basicConfig(filename="FaultBot.log", format="[%(process)d] %(asctime)s - %(message)s", level=logging.INFO)
 
 # Load the environmental variables from the .env file
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN_DEV')
-#GUILD = os.getenv('DISCORD_GUILD')
+GUILD = os.getenv('DISCORD_GUILDID_DEV')
 
 # Create the discord bot
 bot = slash_util.Bot(command_prefix="/")
@@ -54,7 +55,25 @@ async def on_ready():
 
 # Cog for slash_command()s
 class cog_commands(slash_util.Cog):
-    pass
+    @slash_util.slash_command(guild_id=GUILD)
+    async def send_test_embed(self, ctx):
+        # Creating new test embed
+        test = discord.Embed(title='This is the first embed', 
+            description='this is the \n multiline description **with markdown**',
+            color=discord.Color.purple())
+
+        # Test the footer
+        test.set_footer(text='Test for a footer')
+        test.set_author(name='FaultBot')
+        test.add_field(name='test **field**', value='test **value** \n newline')
+        test.add_field(name='test *field* 2', value='value 2')
+        test.add_field(name='test field 3', value='value 3', inline=False)
+
+        print(test.to_dict())
+
+        # Test sending the embed
+        await ctx.send(embed=test)
+
 
 # Sends hero data to the discord
 async def sendHeroes(message, messageParts):
@@ -193,6 +212,8 @@ async def send_embed(message, messageParts):
     # Test sending the embed
     await message.channel.send(embed=test)
 
+# Add the cog to the bot
+bot.add_cog(cog_commands(bot))
 
 # Runs the bot
 bot.run(TOKEN)
