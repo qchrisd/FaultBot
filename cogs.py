@@ -61,6 +61,10 @@ class cog_commands(slash_util.Cog):
         await ctx.send(f"Your Fault username has been updated to {fault_name}. Use this command again if you would like to change it.")
 
 
+    @slash_util.slash_command(guild_id=GUILD, name="unregister")
+    async def unregister_fault_username(self, ctx):
+        pass
+
     @slash_util.slash_command(guild_id=GUILD)
     async def send_test_embed(self, ctx):
         # Creating new test embed
