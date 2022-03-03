@@ -11,8 +11,8 @@ import unittest
 from unittest.mock import MagicMock
 
 # Import methods
-from FaultAPI import _create_pool_manager, _decode_json, _check_user_request_response
-from FaultAPI import get_hero_dicts
+from fault_api import _create_pool_manager, _decode_json, _check_user_request_response
+from fault_api import get_hero_dicts
 
 # Test case
 class FaultAPIRequestTest(unittest.TestCase):
