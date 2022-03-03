@@ -5,12 +5,16 @@ Written by Chris Quartararo
 
 """
 
-def register_fault_username(ctx):
+def create_fault_username_dict(discord_name, fault_name):
 
-    import FaultAPI
+    new_fault_name = {discord_name:fault_name}
 
-    
+    return new_fault_name
+
+
+def add_to_json(ctx, new_fault_name):
     pass
+
 
 def match_info(ctx):
     """

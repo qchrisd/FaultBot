@@ -15,7 +15,8 @@ import logging
 
 # Import discord stuff
 import discord  # v2.0.0 found at (git+https://github.com/Rapptz/discord.py)
-import slash_util  # Requires discord.py 2.0.0+
+import slash_util
+from CommandFunctions import add_to_json  # Requires discord.py 2.0.0+
 
 # Import custom modules
 from constants import helpMessage
@@ -57,8 +58,29 @@ async def on_ready():
 class cog_commands(slash_util.Cog):
 
     @slash_util.slash_command(guild_id=GUILD, name="register")
-    async def register_fault_username(self, ctx):
-        pass
+    async def register_fault_username(self, ctx: slash_util.Context, fault_name: str):
+        """
+        Registers or updates a discord user's name in a JSON for persistent storage.
+        """
+        guild_id = str(ctx.guild.id)
+        discord_name = f"{ctx.author.name}#{ctx.author.discriminator}"
+
+        import json
+        with open("users.json", "r") as file:
+            users_json = file.read()
+        
+        users_dict = json.loads(users_json)
+
+        if guild_id not in users_dict["guild"].keys():
+            users_dict["guild"][guild_id] = {}
+
+        users_dict["guild"][guild_id][discord_name] = fault_name
+
+        with open("users.json", "w") as file:
+            json_data = json.dumps(users_dict, indent=4)
+            file.write(json_data)
+
+        await ctx.send(f"Finished updating fault record")
 
 
     @slash_util.slash_command(guild_id=GUILD)
