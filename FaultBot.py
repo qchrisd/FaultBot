@@ -15,8 +15,7 @@ import logging
 
 # Import discord stuff
 import discord  # v2.0.0 found at (git+https://github.com/Rapptz/discord.py)
-import slash_util
-from CommandFunctions import add_to_json  # Requires discord.py 2.0.0+
+import slash_util  # Requires discord.py 2.0.0+
 
 # Import custom modules
 from constants import helpMessage
@@ -66,18 +65,23 @@ class cog_commands(slash_util.Cog):
         discord_name = f"{ctx.author.name}#{ctx.author.discriminator}"
 
         import json
-        with open("users.json", "r") as file:
-            users_json = file.read()
+        try:
+            with open("users.json", "r") as file:
+                users_json = file.read()
+        except FileNotFoundError as e:
+            pass
+            
+        try:
+            users_dict = json.loads(users_json)
+        except json.decoder.JSONDecodeError as e:
+            users_dict = {"guild":{}}
+        except UnboundLocalError as e:
+            users_dict = {"guild":{}}
         
-        users_dict = json.loads(users_json)
-
-        if guild_id not in users_dict["guild"].keys():
-            users_dict["guild"][guild_id] = {}
-
-        users_dict["guild"][guild_id][discord_name] = fault_name
+        new_dict = functions.update_dict(users_dict, guild_id, discord_name, fault_name)
 
         with open("users.json", "w") as file:
-            json_data = json.dumps(users_dict, indent=4)
+            json_data = json.dumps(new_dict, indent=4)
             file.write(json_data)
 
         await ctx.send(f"Finished updating fault record")
