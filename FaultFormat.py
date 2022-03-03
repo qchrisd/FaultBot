@@ -13,7 +13,7 @@ To Do:
 
 
 # Import Fault API for hero and item imports
-import FaultAPI as f
+import fault_api as f
 
 
 # Format and return the matches requested using getMatches()
