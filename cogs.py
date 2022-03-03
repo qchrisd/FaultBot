@@ -41,13 +41,15 @@ class cog_commands(slash_util.Cog):
             with open("users.json", "r") as file:
                 users_json = file.read()
         except FileNotFoundError as e:
-            pass
+            logging.info(f"Caught error {e}. Should throw UnboundLocalError.")
             
         try:
             users_dict = json.loads(users_json)
         except json.decoder.JSONDecodeError as e:
+            logging.info(f"Caught error {e}. File will be set to default.")
             users_dict = {"guild":{}}
         except UnboundLocalError as e:
+            logging.info(f"Caught error {e}. File users.json will be created.")
             users_dict = {"guild":{}}
         
         new_dict = functions.update_dict(users_dict, guild_id, discord_name, fault_name)
