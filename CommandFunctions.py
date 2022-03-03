@@ -26,6 +26,13 @@ def update_dict(users_dict, guild_id, discord_name, fault_name):
         return users_dict
 
 
+def remove_from_dict(users_dict, guild_id, discord_name):
+    """
+    Removes a discord user from the users.json dictionary.
+    """
+    
+    pass
+
 def match_info(ctx):
     """
     Gets match information for the given user.
