@@ -5,6 +5,7 @@
 *.json
 test.py
 tempCodeRunnerFile.py
+ArchivedMethods.py
 
 # IDE files
 **/.idea
