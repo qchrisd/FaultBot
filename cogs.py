@@ -23,7 +23,7 @@ TOKEN = os.getenv('DISCORD_TOKEN_DEV')
 GUILD = os.getenv('DISCORD_GUILDID_DEV')
 
 # Cog for slash_command()s
-class cog_commands(slash_util.Cog):
+class UserManagement(slash_util.Cog):
 
     @slash_util.slash_command(guild_id=GUILD, name="register")
     async def register_fault_username(self, ctx: slash_util.Context, fault_name: str):
