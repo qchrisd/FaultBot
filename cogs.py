@@ -29,7 +29,10 @@ class cog_commands(slash_util.Cog):
     async def register_fault_username(self, ctx: slash_util.Context, fault_name: str):
         """
         Registers or updates a discord user's name in a JSON for persistent storage.
+        If the JSON is blank or doesn't exist it is created.
+        If the JSON exists, it is updated and rewritten.
         """
+
         guild_id = str(ctx.guild.id)
         discord_name = f"{ctx.author.name}#{ctx.author.discriminator}"
 
@@ -53,7 +56,7 @@ class cog_commands(slash_util.Cog):
             json_data = json.dumps(new_dict, indent=4)
             file.write(json_data)
 
-        await ctx.send(f"Finished updating fault record")
+        await ctx.send(f"Your Fault username has been updated to {fault_name}. Use this command again if you would like to change it.")
 
 
     @slash_util.slash_command(guild_id=GUILD)
