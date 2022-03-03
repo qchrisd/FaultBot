@@ -18,7 +18,7 @@ import discord  # v2.0.0 found at (git+https://github.com/Rapptz/discord.py)
 import slash_util  # Requires discord.py 2.0.0+
 
 # Import custom modules
-from constants import helpMessage
+from cogs import cog_commands
 import CommandFunctions as functions
 
 
@@ -53,64 +53,7 @@ async def on_ready():
     logging.info(f'{bot.user} is ready to recieve commands.')
 
 
-# Cog for slash_command()s
-class cog_commands(slash_util.Cog):
 
-    @slash_util.slash_command(guild_id=GUILD, name="register")
-    async def register_fault_username(self, ctx: slash_util.Context, fault_name: str):
-        """
-        Registers or updates a discord user's name in a JSON for persistent storage.
-        """
-        guild_id = str(ctx.guild.id)
-        discord_name = f"{ctx.author.name}#{ctx.author.discriminator}"
-
-        import json
-        try:
-            with open("users.json", "r") as file:
-                users_json = file.read()
-        except FileNotFoundError as e:
-            pass
-            
-        try:
-            users_dict = json.loads(users_json)
-        except json.decoder.JSONDecodeError as e:
-            users_dict = {"guild":{}}
-        except UnboundLocalError as e:
-            users_dict = {"guild":{}}
-        
-        new_dict = functions.update_dict(users_dict, guild_id, discord_name, fault_name)
-
-        with open("users.json", "w") as file:
-            json_data = json.dumps(new_dict, indent=4)
-            file.write(json_data)
-
-        await ctx.send(f"Finished updating fault record")
-
-
-    @slash_util.slash_command(guild_id=GUILD)
-    async def send_test_embed(self, ctx):
-        # Creating new test embed
-        test = discord.Embed(title='This is the first embed', 
-            description='this is the \n multiline description **with markdown**',
-            color=discord.Color.purple())
-
-        # Test the footer
-        test.set_footer(text='Test for a footer')
-        test.set_author(name='FaultBot')
-        test.add_field(name='test **field**', value='test **value** \n newline')
-        test.add_field(name='test *field* 2', value='value 2')
-        test.add_field(name='test field 3', value='value 3', inline=False)
-
-        print(test.to_dict())
-
-        # Test sending the embed
-        await ctx.send(embed=test)
-
-
-    @slash_util.slash_command(guild_id=GUILD, name="match")
-    async def match_info(self, ctx):
-        test_string = functions.match_info(ctx)
-        await ctx.send(test_string)
 
 # Sends hero data to the discord
 async def sendHeroes(message, messageParts):
