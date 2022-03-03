@@ -12,8 +12,18 @@ def create_fault_username_dict(discord_name, fault_name):
     return new_fault_name
 
 
-def add_to_json(ctx, new_fault_name):
-    pass
+def update_dict(users_dict, guild_id, discord_name, fault_name):
+        """
+        Updates a dictionary with either a new entry for a user.
+        Returns a dictionary
+        """
+
+        if guild_id not in users_dict["guild"].keys():
+            users_dict["guild"][guild_id] = {}
+
+        users_dict["guild"][guild_id][discord_name] = fault_name
+
+        return users_dict
 
 
 def match_info(ctx):
