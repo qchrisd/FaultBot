@@ -12,7 +12,7 @@ from unittest.mock import MagicMock
 
 # Import methods
 from fault_api import _create_pool_manager, _decode_json, _check_user_request_response
-from fault_api import get_hero_dicts
+from fault_api import get_hero_play_stats, get_hero_dicts
 
 # Test case
 class FaultAPIRequestTest(unittest.TestCase):
@@ -33,6 +33,12 @@ class FaultAPIRequestTest(unittest.TestCase):
 
         actual_failure = _check_user_request_response({"success":False})
         self.assertEqual(actual_failure, -1)
+
+
+    def test_get_hero_play_stats(self):
+        test_fn = lambda _:{"heroes": {"Twinblast": {"wins": 2204}}}
+        actual = get_hero_play_stats(query_website_fn=test_fn)
+        self.assertEqual(actual, {"Twinblast": {"wins": 2204}})
 
 
     def test_get_hero_dicts(self):

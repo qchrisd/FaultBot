@@ -86,14 +86,14 @@ def _check_user_request_response(page_dict):
 
 
 ## Main
-def get_hero_play_stats():
+def get_hero_play_stats(query_website_fn=_query_website):
     """
     Gets the stats per hero in the format https://api.playfault.com/getStatsPerHero
     Returns a JSON object with the HeroID as the key
     """
 
     page_link = 'https://api.playfault.com/getStatsPerHero'
-    page_dict = _query_website(page_link)
+    page_dict = query_website_fn(page_link)
     
     return page_dict['heroes']
 
@@ -280,5 +280,6 @@ def get_image_hero_portrait(hero_id):
 if __name__ == '__main__':
     print("File called directly.")
     _startup()
+    print(get_hero_play_stats())
 else:
     _startup()
