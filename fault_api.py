@@ -149,7 +149,7 @@ def get_hero_info(hero, query_website_fn=_query_website):
     return page_json
 
 
-def get_items():
+def get_items(query_website_fn=_query_website):
     """
     Gets the list of items from the website.
     Returns a dict.
@@ -157,12 +157,12 @@ def get_items():
 
     # Gets information from the website
     items_link = "https://api.playfault.com/items"
-    items = _query_website(items_link)
+    items = query_website_fn(items_link)
 
     return items
 
 
-def get_aspects():
+def get_aspects(query_website_fn=_query_website):
     """
     Gets the list of aspects.
     Returns a dict.
@@ -170,7 +170,7 @@ def get_aspects():
 
     # Gets information from the website
     aspects_link = "https://api.playfault.com/aspects"
-    aspects = _query_website(aspects_link)
+    aspects = query_website_fn(aspects_link)
 
     return aspects
 
