@@ -126,13 +126,12 @@ def get_user(user, query_website_fn=_query_website):
     return user
 
 
-def get_user_id(user):
+def get_user_id(user, get_user_fn=get_user):
     """
     Returns a player's ID given a username.
     """
 
-    user = get_user(user)
-
+    user = get_user_fn(user)
     if user == -1:
         return user
     
@@ -280,6 +279,6 @@ def get_image_hero_portrait(hero_id):
 if __name__ == '__main__':
     print("File called directly.")
     _startup()
-    print(get_user("qchrisd"))
+    print(get_user_id("bbbbbbbbbbbbbbbb"))
 else:
     _startup()
