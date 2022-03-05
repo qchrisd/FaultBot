@@ -138,13 +138,13 @@ def get_user_id(user, get_user_fn=get_user):
     return user["id"]
 
 
-def get_hero_info(hero):
+def get_hero_info(hero, query_website_fn=_query_website):
     """
     Gets the information for a given hero.
     """
 
     page_link = f"https://api.playfault.com/heroData/{hero}"
-    page_json = _query_website(page_link)
+    page_json = query_website_fn(page_link)
 
     return page_json
 
