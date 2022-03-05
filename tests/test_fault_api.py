@@ -12,7 +12,7 @@ from unittest.mock import MagicMock
 
 # Import methods
 from fault_api import _create_pool_manager, _decode_json, _check_user_request_response
-from fault_api import get_hero_play_stats, get_hero_dicts
+from fault_api import get_hero_play_stats, get_hero_dicts, get_user
 
 # Test case
 class FaultAPIRequestTest(unittest.TestCase):
@@ -28,9 +28,10 @@ class FaultAPIRequestTest(unittest.TestCase):
 
 
     def test_check_user_request_response(self):
+        # Success case
         actual_success = _check_user_request_response({"success":True, "players":{0:{"id":29016}}})
         self.assertEqual(actual_success, {"id":29016})
-
+        # Fail case
         actual_failure = _check_user_request_response({"success":False})
         self.assertEqual(actual_failure, -1)
 
@@ -46,12 +47,15 @@ class FaultAPIRequestTest(unittest.TestCase):
         self.assertEqual(actual_hero_to_id, {"Twinblast":2})
         self.assertEqual(actual_id_to_hero, {2:"Twinblast"})
 
-    """
+
     def test_get_user(self):
-        #actual = get_user("qchrisd", lambda x: {"success": False})
-        actual = get_user("qchrisd")
-        self.assertEqual(actual) # fail case
-    """
+        # fail case
+        actual = get_user("qchrisd", lambda _: {"success": False})
+        self.assertEqual(actual, -1)
+        # success case
+        actual = get_user("qchrisd", lambda _: {"success": True,"players": [{"rank": 1139,"id": 29016}]})
+        self.assertEqual(actual, {"rank": 1139,"id": 29016})
+
 # Run testing
 if __name__ == '__main__':
     unittest.main()

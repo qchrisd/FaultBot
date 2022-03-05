@@ -112,14 +112,14 @@ def get_hero_dicts(hero_stats = get_hero_play_stats()):
     return hero_to_id, id_to_hero
 
 
-def get_user(user):
+def get_user(user, query_website_fn=_query_website):
     """ 
     Returns a player's information from a username as a dict.
     Returns -1 if the username is not found.
     """
     
     page_link = f'https://api.playfault.com/getTopPlayers/1/{user}'
-    page_dict = _query_website(page_link)
+    page_dict = query_website_fn(page_link)
     
     user = _check_user_request_response(page_dict)
 
@@ -280,6 +280,6 @@ def get_image_hero_portrait(hero_id):
 if __name__ == '__main__':
     print("File called directly.")
     _startup()
-    print(get_hero_play_stats())
+    print(get_user("qchrisd"))
 else:
     _startup()
