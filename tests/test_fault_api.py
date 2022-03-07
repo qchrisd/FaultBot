@@ -2,18 +2,28 @@
 Unit tests for FaultAPI module.
 
 Written by Chris Quartararo
-Last update 2/27/2022
+Last update 3/7/2022
 
 """
 
 # Imports
 import unittest
-from unittest.mock import MagicMock
-from urllib.request import AbstractBasicAuthHandler
 
 # Import methods
-from fault_api import _create_pool_manager, _decode_json, _check_user_request_response, get_match_data
-from fault_api import get_hero_play_stats, get_hero_dicts, get_user, get_user_id, get_hero_info, get_items, get_aspects, get_matches, get_player_hero_stats, get_elo
+from fault_api import (_decode_json,
+                       _create_pool_manager,
+                       _check_user_request_response,
+                       get_hero_play_stats,
+                       get_hero_dicts,
+                       get_user,
+                       get_user_id,
+                       get_hero_info,
+                       get_items,
+                       get_aspects,
+                       get_matches,
+                       get_match_data,
+                       get_player_hero_stats,
+                       get_elo)
 
 # Test case
 class FaultAPIRequestTest(unittest.TestCase):
