@@ -124,7 +124,6 @@ def get_user(fault_username, query_website_fn=_query_website):
     try:
         user = user[0]
     except IndexError as e:
-        print(user)
         user = -1
 
     return user
@@ -132,6 +131,7 @@ def get_user(fault_username, query_website_fn=_query_website):
 
 def get_top_players(user, query_website_fn=_query_website):
     """ 
+    TODO update this method to be useful
     OLD GET_USERS() METHOD. NEEDS REWORK FOR TOP PLAYERS LIST
     Returns a player's information from a username as a dict.
     Returns -1 if the username is not found.
@@ -200,11 +200,11 @@ def get_matches(user, n = 1, query_website_fn=_query_website):
     Returns  -1 if no matches were found.
     """
     
-    user_id = user["ID"]
-
-    # Check if the ID is good
-    if user_id == -1:
-        return user_id
+    # Check if the user is good
+    if user == -1:
+        return user
+    else:
+        user_id = user["ID"]
 
     page_link = f'https://api.playfault.com/getMatches/{user_id}/{n}'
     page_dict = query_website_fn(page_link)
@@ -231,10 +231,11 @@ def get_player_hero_stats(user):
     Returns -1 if the player is not found.
     """
 
-    user_id = user["ID"]
-
-    if user_id == -1:
-        return user_id
+    # Check if the user is good
+    if user == -1:
+        return user
+    else:
+        user_id = user["ID"]
     
     # Collect info from Fault website and convert json to dict
     page_link = f'https://api.playfault.com/getPlayerHeroStats/{user_id}'
@@ -251,10 +252,11 @@ def get_elo(user):
     Returns -1 if no user is found
     """
 
-    user_id = user["ID"]
-
-    if user_id == -1:
-        return user_id
+    # Check if the user is good
+    if user == -1:
+        return user
+    else:
+        user_id = user["ID"]
 
     # Gets the information from the website
     page_link = f'https://api.playfault.com/getEloData/{user_id}'
