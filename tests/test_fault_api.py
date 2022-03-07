@@ -49,13 +49,18 @@ class FaultAPIRequestTest(unittest.TestCase):
 
 
     def test_get_user(self):
+        actual = get_user("qchrisd", lambda _: [{"id": 29016,"username": "qchrisd"}])
+        self.assertEqual(actual, {"id": 29016,"username": "qchrisd"})
+
+    """
+    def test_top_palyers(self):
         # fail case
         actual = get_user("qchrisd", lambda _: {"success": False})
         self.assertEqual(actual, -1)
         # success case
         actual = get_user("qchrisd", lambda _: {"success": True,"players": [{"rank": 1139,"id": 29016}]})
         self.assertEqual(actual, {"rank": 1139,"id": 29016})
-
+    """
 
     def test_get_user_id(self):
         # fail case

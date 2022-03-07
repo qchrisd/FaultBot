@@ -112,8 +112,21 @@ def get_hero_dicts(hero_stats = get_hero_play_stats()):
     return hero_to_id, id_to_hero
 
 
-def get_user(user, query_website_fn=_query_website):
+def get_user(fault_username, query_website_fn=_query_website):
+    """
+    Gets the usernames and IDs of fault users given a search string.
+    Returns a dict.
+    """
+
+    page_link = f"https://api.playfault.com/searchUsers/{fault_username}"
+    user = query_website_fn(page_link)[0]
+
+    return user
+
+
+def get_top_players(user, query_website_fn=_query_website):
     """ 
+    OLD GET_USERS() METHOD. NEEDS REWORK FOR TOP PLAYERS LIST
     Returns a player's information from a username as a dict.
     Returns -1 if the username is not found.
     """
