@@ -80,6 +80,13 @@ class FaultAPIRequestTest(unittest.TestCase):
         actual = get_aspects(lambda _:{"0": {"id": 0,"name": "King"}})
         self.assertEqual(actual, {"0": {"id": 0,"name": "King"}})
 
+    """
+    # Get matches is too impure to test. Leaving it as an orchestrator
+    def test_get_matches(self):
+        pass
+    """
+
+    
 
 
 # Run testing
