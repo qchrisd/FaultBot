@@ -12,7 +12,7 @@ from unittest.mock import MagicMock
 
 # Import methods
 from fault_api import _create_pool_manager, _decode_json, _check_user_request_response, get_match_data
-from fault_api import get_hero_play_stats, get_hero_dicts, get_user, get_user_id, get_hero_info, get_items, get_aspects
+from fault_api import get_hero_play_stats, get_hero_dicts, get_user, get_user_id, get_hero_info, get_items, get_aspects, get_matches
 
 # Test case
 class FaultAPIRequestTest(unittest.TestCase):
@@ -90,11 +90,14 @@ class FaultAPIRequestTest(unittest.TestCase):
         actual = get_aspects(lambda _:{"0": {"id": 0,"name": "King"}})
         self.assertEqual(actual, {"0": {"id": 0,"name": "King"}})
 
-    """
-    # Get matches is too impure to test. Leaving it as an orchestrator
+    
     def test_get_matches(self):
-        pass
-    """
+        # Successfully found user
+        actual = get_matches({"ID":29016, "username":"qchrisd"}, query_website_fn= lambda _: {"success": True,"matches": [{"id": 766814}]})
+        self.assertEqual(actual, {"id": 766814})
+        # Failed to find user
+        actual = get_matches(-1, query_website_fn= lambda _: {"success":False})
+        self.assertEqual(actual, -1)
 
     def test_get_match_data(self):
         actual = get_match_data(766814, lambda _: {"ID": 766814,"Winner": 0,"StartDateTime": "2022-02-17T03:20:48.000Z"})
