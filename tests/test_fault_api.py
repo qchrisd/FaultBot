@@ -43,14 +43,19 @@ class FaultAPIRequestTest(unittest.TestCase):
 
 
     def test_get_hero_dicts(self):
+        # TODO Need to update test for new get_user() method
         actual_hero_to_id, actual_id_to_hero = get_hero_dicts({"Twinblast":{"Id":2}})
         self.assertEqual(actual_hero_to_id, {"Twinblast":2})
         self.assertEqual(actual_id_to_hero, {2:"Twinblast"})
 
 
     def test_get_user(self):
+        # Success case
         actual = get_user("qchrisd", lambda _: [{"id": 29016,"username": "qchrisd"}])
         self.assertEqual(actual, {"id": 29016,"username": "qchrisd"})
+        # Fail case
+        actual = get_user("qchrisd", lambda _: [])
+        self.assertEqual(actual, -1)
 
     """
     def test_top_palyers(self):

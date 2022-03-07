@@ -119,7 +119,13 @@ def get_user(fault_username, query_website_fn=_query_website):
     """
 
     page_link = f"https://api.playfault.com/searchUsers/{fault_username}"
-    user = query_website_fn(page_link)[0]
+    user = query_website_fn(page_link)
+    
+    try:
+        user = user[0]
+    except IndexError as e:
+        print(user)
+        user = -1
 
     return user
 
@@ -194,7 +200,7 @@ def get_matches(user, n = 1, query_website_fn=_query_website):
     Returns  -1 if no matches were found.
     """
     
-    user_id = get_user_id(user)
+    user_id = user["ID"]
 
     # Check if the ID is good
     if user_id == -1:
@@ -225,7 +231,7 @@ def get_player_hero_stats(user):
     Returns -1 if the player is not found.
     """
 
-    user_id = get_user_id(user)
+    user_id = user["ID"]
 
     if user_id == -1:
         return user_id
@@ -245,7 +251,7 @@ def get_elo(user):
     Returns -1 if no user is found
     """
 
-    user_id = get_user_id(user)
+    user_id = user["ID"]
 
     if user_id == -1:
         return user_id
@@ -292,6 +298,6 @@ def get_image_hero_portrait(hero_id):
 if __name__ == '__main__':
     print("File called directly.")
     _startup()
-    print(get_user_id("bbbbbbbbbbbbbbbb"))
+    print(get_user("bbbbbbbbb"))
 else:
     _startup()
