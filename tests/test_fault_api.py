@@ -11,7 +11,7 @@ import unittest
 from unittest.mock import MagicMock
 
 # Import methods
-from fault_api import _create_pool_manager, _decode_json, _check_user_request_response
+from fault_api import _create_pool_manager, _decode_json, _check_user_request_response, get_match_data
 from fault_api import get_hero_play_stats, get_hero_dicts, get_user, get_user_id, get_hero_info, get_items, get_aspects
 
 # Test case
@@ -86,7 +86,11 @@ class FaultAPIRequestTest(unittest.TestCase):
         pass
     """
 
-    
+    def test_get_match_data(self):
+        actual = get_match_data(766814, lambda _: {"ID": 766814,"Winner": 0,"StartDateTime": "2022-02-17T03:20:48.000Z"})
+        self.assertEqual(actual["ID"], 766814)
+
+
 
 
 # Run testing

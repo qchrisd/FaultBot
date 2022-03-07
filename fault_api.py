@@ -194,14 +194,14 @@ def get_matches(user, n = 1, query_website_fn=_query_website):
     return match
 
 
-def get_match_data(match_id):
+def get_match_data(match_id, query_website_fn):
     """
     Gets match data from the website.
     Returns a dict.
     """
 
     page_link = f'https://api.playfault.com/getMatchData/{match_id}'
-    match = _query_website(page_link)
+    match = query_website_fn(page_link)
 
     return match
 
