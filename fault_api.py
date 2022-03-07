@@ -245,7 +245,7 @@ def get_player_hero_stats(user, query_website_fn=_query_website):
     return player_hero_stats
 
 
-def get_elo(user):
+def get_elo(user, query_website_fn=_query_website):
     """
     Gets the MMR and ELO information for an ID. 
     Returns a dict.
@@ -260,7 +260,7 @@ def get_elo(user):
 
     # Gets the information from the website
     page_link = f'https://api.playfault.com/getEloData/{user_id}'
-    page_json = _query_website(page_link)
+    page_json = query_website_fn(page_link)
 
     return page_json
 

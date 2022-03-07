@@ -9,10 +9,11 @@ Last update 2/27/2022
 # Imports
 import unittest
 from unittest.mock import MagicMock
+from urllib.request import AbstractBasicAuthHandler
 
 # Import methods
 from fault_api import _create_pool_manager, _decode_json, _check_user_request_response, get_match_data
-from fault_api import get_hero_play_stats, get_hero_dicts, get_user, get_user_id, get_hero_info, get_items, get_aspects, get_matches, get_player_hero_stats
+from fault_api import get_hero_play_stats, get_hero_dicts, get_user, get_user_id, get_hero_info, get_items, get_aspects, get_matches, get_player_hero_stats, get_elo
 
 # Test case
 class FaultAPIRequestTest(unittest.TestCase):
@@ -116,6 +117,16 @@ class FaultAPIRequestTest(unittest.TestCase):
         actual = get_player_hero_stats(-1, {"success": False})
         self.assertEqual(actual, -1)
 
+
+    def test_get_elo(self):
+        # successfully found user
+        user = {"ID":29016, "username":"qchrisd"}
+        query_fn = lambda _: {"id":"29016","username":"qchrisd","eloTitle":"Silver","MMR":1223.1,"ranking":1136,"placementGamesRemain":0}
+        actual = get_elo(user, query_fn)
+        self.assertEqual(actual["id"], "29016")
+        # Failed to find user
+        actual = get_elo(-1, query_fn)
+        self.assertEqual(actual, -1)
 
 
 # Run testing
