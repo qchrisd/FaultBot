@@ -225,7 +225,7 @@ def get_match_data(match_id, query_website_fn):
     return match
 
 
-def get_player_hero_stats(user):
+def get_player_hero_stats(user, query_website_fn=_query_website):
     """
     Gets hero statistics for a specified user.
     Returns -1 if the player is not found.
@@ -239,7 +239,7 @@ def get_player_hero_stats(user):
     
     # Collect info from Fault website and convert json to dict
     page_link = f'https://api.playfault.com/getPlayerHeroStats/{user_id}'
-    page_dict = _query_website(page_link)
+    page_dict = query_website_fn(page_link)
     player_hero_stats = page_dict["heroes"]
 
     return player_hero_stats
