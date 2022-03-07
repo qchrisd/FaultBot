@@ -147,6 +147,7 @@ def get_top_players(user, query_website_fn=_query_website):
 
 def get_user_id(user, get_user_fn=get_user):
     """
+    TODO evaluate if this method needs to be here
     Returns a player's ID given a username.
     """
 
