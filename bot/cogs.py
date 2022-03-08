@@ -5,17 +5,15 @@ This file contains the cog and commands for the bot.
 # Import packages
 import os
 from dotenv import load_dotenv  # Package titled python-dotenv
-import logging
 
 # Import discord stuff
 import discord  # v2.0.0 found at (git+https://github.com/Rapptz/discord.py)
 import slash_util  # Requires discord.py 2.0.0+
 
 # Import custom modules
+import bot.logger as log  # logging.info is set up by the fault_bot module
 import CommandFunctions as functions
 
-# Set up logging
-logging.basicConfig(filename="FaultBot.log", format="[%(process)d] %(asctime)s - %(message)s", level=logging.INFO)
 
 # Load the environmental variables from the .env file
 load_dotenv()
@@ -41,15 +39,15 @@ class UserManagement(slash_util.Cog):
             with open("users.json", "r") as file:
                 users_json = file.read()
         except FileNotFoundError as e:
-            logging.info(f"Caught error {e}. Should throw UnboundLocalError.")
+            log.log_info(f"Caught error {e}. Should throw UnboundLocalError.")
             
         try:
             users_dict = json.loads(users_json)
         except json.decoder.JSONDecodeError as e:
-            logging.info(f"Caught error {e}. File will be set to default.")
+            log.log_info(f"Caught error {e}. File will be set to default.")
             users_dict = {"guild":{}}
         except UnboundLocalError as e:
-            logging.info(f"Caught error {e}. File users.json will be created.")
+            log.log_info(f"Caught error {e}. File users.json will be created.")
             users_dict = {"guild":{}}
         
         new_dict = functions.update_dict(users_dict, guild_id, discord_name, fault_name)

@@ -11,17 +11,17 @@ Written by Chris Quartararo
 # Import packages
 import os
 from dotenv import load_dotenv  # Package titled python-dotenv
-import logging
 
 # Import discord stuff
 import slash_util  # Requires discord.py 2.0.0+
 
 # Import custom modules
+import bot.logger as log
 from bot.cogs import UserManagement
 
 
 # Set up logging
-logging.basicConfig(filename="FaultBot.log", format="[%(process)d] %(asctime)s - %(message)s", level=logging.INFO)
+log.setup_logging("bot/fault_bot.log")
 
 # Load the environmental variables from the .env file
 load_dotenv()
@@ -40,7 +40,7 @@ async def on_connect():
     Runs when bot is connected to a server.
     """
 
-    logging.info(f'{bot.user} has successfully connected to Discord in server {bot.guilds}.')
+    log.log_info(f'{bot.user} has successfully connected to Discord in server {bot.guilds}.')
 
 
 @bot.event
@@ -49,7 +49,7 @@ async def on_ready():
     Runs when the bot is fully functional and is ready to start being a bot.
     """
 
-    logging.info(f'{bot.user} is ready to recieve commands.')
+    log.log_info(f'{bot.user} is ready to recieve commands.')
 
 
 # Add the cog to the bot
