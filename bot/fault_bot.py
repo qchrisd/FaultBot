@@ -17,7 +17,7 @@ import logging
 import slash_util  # Requires discord.py 2.0.0+
 
 # Import custom modules
-from cogs import UserManagement, cog_commands
+from bot.cogs import UserManagement
 
 
 # Set up logging
