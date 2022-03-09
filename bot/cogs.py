@@ -30,7 +30,6 @@ class UserManagement(slash_util.Cog):
         If the JSON is blank or doesn't exist it is created.
         If the JSON exists, it is updated and rewritten.
         """
-        import json
 
         # Some variables for easy access
         guild_id = str(ctx.guild.id)
@@ -49,8 +48,25 @@ class UserManagement(slash_util.Cog):
 
 
     @slash_util.slash_command(guild_id=GUILD, name="unregister", description="Remove all Fault usernames associated with your discord user.")
-    async def unregister_fault_username(self, ctx):
-        pass
+    async def unregister_fault_username(self, ctx: slash_util.Context):
+        """
+        Removes all Fault usernames from the users.json file based on the discord user.
+        """
+        # Some easy variables
+        guild_id = str(ctx.guild.id)
+        discord_name = f"{ctx.author.name}#{ctx.author.discriminator}"
+
+        users_json = functions.read_file("./bot/users.json")
+
+        users_dict = functions.decode_json(users_json)
+
+        new_dict = functions.remove_from_dict(users_dict, guild_id, discord_name)
+
+        functions.write_file("./bot/users.json", new_dict)
+
+        # Send confirmation of completion to messenger
+        await ctx.send(f"Your Fault user names have been forgotten. User /register to add a new Fault user name.")
+
  
     """
     @slash_util.slash_command(guild_id=GUILD)
