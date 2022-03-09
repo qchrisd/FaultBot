@@ -8,13 +8,6 @@ Written by Chris Quartararo
 import bot.logger as log
 
 
-def create_fault_username_dict(discord_name, fault_name):
-
-    new_fault_name = {discord_name:fault_name}
-
-    return new_fault_name
-
-
 def update_dict(users_dict, guild_id, discord_name, fault_name):
     """
     Updates a dictionary with either a new entry for a user.
