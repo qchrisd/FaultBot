@@ -3,7 +3,7 @@ Contains unit tests for the CommandFunctions module.
 """
 
 import unittest
-from CommandFunctions import update_dict, remove_from_dict
+from bot.cog_helpers import update_dict, remove_from_dict
 
 
 class TestCommandFunctions(unittest.TestCase):
