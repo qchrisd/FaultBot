@@ -30,36 +30,19 @@ class UserManagement(slash_util.Cog):
         If the JSON is blank or doesn't exist it is created.
         If the JSON exists, it is updated and rewritten.
         """
+        import json
 
         # Some variables for easy access
         guild_id = str(ctx.guild.id)
         discord_name = f"{ctx.author.name}#{ctx.author.discriminator}"
 
-        # Try to open the users file
-        import json
-        try:
-            with open("users.json", "r") as file:
-                users_json = file.read()
-        except FileNotFoundError as e:
-            log.error(f"Caught error {e}. Should throw UnboundLocalError.")
+        users_json = functions.read_file("./bot/users.json")
             
-        # Try to load the JSON
-        try:
-            users_dict = json.loads(users_json)
-        except json.decoder.JSONDecodeError as e:
-            log.error(f"Caught error {e}. File will be set to default.")
-            users_dict = {"guild":{}}
-        except UnboundLocalError as e:
-            log.error(f"Caught error {e}. File users.json will be created.")
-            users_dict = {"guild":{}}
+        users_dict = functions.decode_json(users_json)
         
-        # Update the JSON with the new information
         new_dict = functions.update_dict(users_dict, guild_id, discord_name, fault_name)
 
-        # Write the new users file
-        with open("users.json", "w") as file:
-            json_data = json.dumps(new_dict, indent=4)
-            file.write(json_data)
+        functions.write_file("./bot/users.json", new_dict)
 
         # Send confirmation of completion to the messenger
         await ctx.send(f"Your Fault username has been updated to {fault_name}. Use this command again if you would like to change it.")

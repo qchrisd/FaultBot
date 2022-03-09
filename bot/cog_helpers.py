@@ -8,6 +8,55 @@ Written by Chris Quartararo
 import bot.logger as log
 
 
+def read_file(path):
+    """
+    Opens a file and returns the data.
+    Returns -1 if the file is not found.
+    """
+
+    try:
+        with open(f"{path}", "r") as file:
+            file_data = file.read()
+        return file_data
+    except FileNotFoundError as e:
+        log.error(f"Caught error {e}. No file found.")
+
+    return -1
+
+
+def decode_json(json_file):
+    """
+    Reads a JSON file and returns a python dict.
+    If there is an issue decoding the JSON file then a new users dict is started from scratch.
+    """
+
+    # If the file is not found, json_file will be -1 and the dict is started from scratch.
+    if json_file == -1:
+        return {"guild":{}}
+
+    import json
+
+    data = -1
+    try:
+        data = json.loads(json_file)
+    except json.decoder.JSONDecodeError as e:
+        log.error(f"Caught error {e}. File will be set to default.")
+        data = {"guild":{}}
+
+    return data
+
+
+def write_file(path, data):
+    """
+    Writes a JSON file with the given data to the given path.
+    """
+
+    import json
+    with open(f"{path}", "w") as file:
+        json_data = json.dumps(data, indent=4)
+        file.write(json_data)
+
+
 def update_dict(users_dict, guild_id, discord_name, fault_name):
     """
     Updates a dictionary with either a new entry for a user.
