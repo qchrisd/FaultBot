@@ -12,7 +12,7 @@ import slash_util  # Requires discord.py 2.0.0+
 
 # Import custom modules
 import bot.logger as log  # logging.info is set up by the fault_bot module
-import CommandFunctions as functions
+import bot.cog_helpers as functions
 
 
 # Load the environmental variables from the .env file
@@ -31,31 +31,37 @@ class UserManagement(slash_util.Cog):
         If the JSON exists, it is updated and rewritten.
         """
 
+        # Some variables for easy access
         guild_id = str(ctx.guild.id)
         discord_name = f"{ctx.author.name}#{ctx.author.discriminator}"
 
+        # Try to open the users file
         import json
         try:
             with open("users.json", "r") as file:
                 users_json = file.read()
         except FileNotFoundError as e:
-            log.log_info(f"Caught error {e}. Should throw UnboundLocalError.")
+            log.error(f"Caught error {e}. Should throw UnboundLocalError.")
             
+        # Try to load the JSON
         try:
             users_dict = json.loads(users_json)
         except json.decoder.JSONDecodeError as e:
-            log.log_info(f"Caught error {e}. File will be set to default.")
+            log.error(f"Caught error {e}. File will be set to default.")
             users_dict = {"guild":{}}
         except UnboundLocalError as e:
-            log.log_info(f"Caught error {e}. File users.json will be created.")
+            log.error(f"Caught error {e}. File users.json will be created.")
             users_dict = {"guild":{}}
         
+        # Update the JSON with the new information
         new_dict = functions.update_dict(users_dict, guild_id, discord_name, fault_name)
 
+        # Write the new users file
         with open("users.json", "w") as file:
             json_data = json.dumps(new_dict, indent=4)
             file.write(json_data)
 
+        # Send confirmation of completion to the messenger
         await ctx.send(f"Your Fault username has been updated to {fault_name}. Use this command again if you would like to change it.")
 
 
