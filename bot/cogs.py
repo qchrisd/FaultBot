@@ -67,7 +67,15 @@ class UserManagement(slash_util.Cog):
         # Send confirmation of completion to messenger
         await ctx.send(f"Your Fault user names have been forgotten. User /register to add a new Fault user name.")
 
- 
+
+    @slash_util.slash_command(guild_id=GUILD, name="show_username", description="Display the Fault username that is registered to your discord user.")
+    async def show_username(self, ctx: slash_util.Context):
+        """
+        Sends the user name that is registered to the messenger.
+        """
+        pass
+
+
     """
     @slash_util.slash_command(guild_id=GUILD)
     async def send_test_embed(self, ctx):
