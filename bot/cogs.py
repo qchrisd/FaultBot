@@ -23,7 +23,7 @@ GUILD = os.getenv('DISCORD_GUILDID_DEV')
 # Cog for slash_command()s
 class UserManagement(slash_util.Cog):
 
-    @slash_util.slash_command(guild_id=GUILD, name="register")
+    @slash_util.slash_command(guild_id=GUILD, name="register", description="Associate or change a Fault username with your discord user.")
     async def register_fault_username(self, ctx: slash_util.Context, fault_name: str):
         """
         Registers or updates a discord user's name in a JSON for persistent storage.
@@ -59,10 +59,11 @@ class UserManagement(slash_util.Cog):
         await ctx.send(f"Your Fault username has been updated to {fault_name}. Use this command again if you would like to change it.")
 
 
-    @slash_util.slash_command(guild_id=GUILD, name="unregister")
+    @slash_util.slash_command(guild_id=GUILD, name="unregister", description="Remove all Fault usernames associated with your discord user.")
     async def unregister_fault_username(self, ctx):
         pass
-
+ 
+    """
     @slash_util.slash_command(guild_id=GUILD)
     async def send_test_embed(self, ctx):
         # Creating new test embed
@@ -87,3 +88,4 @@ class UserManagement(slash_util.Cog):
     async def match_info(self, ctx):
         test_string = functions.match_info(ctx)
         await ctx.send(test_string)
+        """
