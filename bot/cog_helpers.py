@@ -92,8 +92,10 @@ def get_from_dict(users_dict, guild_id, discord_name):
     """
     Retrieves a Fault user name from the users.json dictionary.
     """
-    
-    user = users_dict["guild"][guild_id].pop(discord_name)
+    try:
+        user = users_dict["guild"][guild_id].pop(discord_name)
+    except KeyError as e:
+        user = -1
     return user
 
 
