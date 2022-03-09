@@ -73,7 +73,18 @@ class UserManagement(slash_util.Cog):
         """
         Sends the user name that is registered to the messenger.
         """
-        pass
+        
+        # Some easy variables
+        guild_id = str(ctx.guild.id)
+        discord_name = f"{ctx.author.name}#{ctx.author.discriminator}"
+
+        users_json = functions.read_file("./bot/users.json")
+
+        users_dict = functions.decode_json(users_json)
+
+        user = functions.get_from_dict(users_dict, guild_id, discord_name)
+
+        await ctx.send(f"Your registered Fault user name is {user}")
 
 
     """
