@@ -21,7 +21,8 @@ from bot.cogs import UserManagement
 
 
 # Set up logging
-log.setup_logging("bot/fault_bot.log")
+log.setup_info("bot/fault_bot.log")
+log.setup_error("bot/fault_bot.log")
 
 # Load the environmental variables from the .env file
 load_dotenv()
@@ -40,7 +41,7 @@ async def on_connect():
     Runs when bot is connected to a server.
     """
 
-    log.log_info(f'{bot.user} has successfully connected to Discord in server {bot.guilds}.')
+    log.info(f'{bot.user} has successfully connected to Discord in server {bot.guilds}.')
 
 
 @bot.event
@@ -49,7 +50,7 @@ async def on_ready():
     Runs when the bot is fully functional and is ready to start being a bot.
     """
 
-    log.log_info(f'{bot.user} is ready to recieve commands.')
+    log.info(f'{bot.user} is ready to recieve commands.')
 
 
 # Add the cog to the bot

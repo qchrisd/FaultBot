@@ -7,11 +7,21 @@ This class handles logging for fault_bot using the logging package.
 import logging
 
 
-def setup_logging(file_name):
-    """Sets up logging."""
+def setup_info(file_name):
+    """Sets up logging for info."""
     logging.basicConfig(filename=f"{file_name}", format="[%(process)d] %(asctime)s - %(message)s", level=logging.INFO)
 
 
-def log_info(log_message):
-    """Logs a message with logging."""
+def info(log_message):
+    """Logs an info message with logging."""
     logging.info(log_message)
+
+
+def setup_error(file_name):
+    """Sets up logging for bugs."""
+    logging.basicConfig(filename=f"{file_name}", format="[%(process)d] %(asctime)s - %(message)s", level=logging.ERROR)
+
+
+def error(log_message):
+    """Logs an error message in the log."""
+    logging.error(log_message)
