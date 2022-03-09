@@ -88,6 +88,13 @@ def remove_from_dict(users_dict, guild_id, discord_name):
     return users_dict
 
 
+def get_from_dict(users_dict, guild_id, discord_name):
+    """
+    Retrieves a Fault user name from the users.json dictionary.
+    """
+    pass
+
+
 def match_info(ctx):
     """
     Gets match information for the given user.
