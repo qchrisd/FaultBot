@@ -92,7 +92,9 @@ def get_from_dict(users_dict, guild_id, discord_name):
     """
     Retrieves a Fault user name from the users.json dictionary.
     """
-    pass
+    
+    user = users_dict["guild"][guild_id].pop(discord_name)
+    return user
 
 
 def match_info(ctx):
