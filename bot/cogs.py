@@ -85,7 +85,7 @@ class UserManagement(slash_util.Cog):
 
         user = helpers.get_from_dict(users_dict, guild_id, discord_name)
 
-        if user == -1:
+        if user == None:
             await ctx.send("There is no Fault name registered to your discord name.")
         else:
             await ctx.send(f"Your registered Fault user name is {user}")

@@ -11,7 +11,7 @@ import bot.logger as log
 def read_file(path):
     """
     Opens a file and returns the data.
-    Returns -1 if the file is not found.
+    Returns None if the file is not found.
     """
 
     try:
@@ -21,7 +21,7 @@ def read_file(path):
     except FileNotFoundError as e:
         log.error(f"Caught error {e}. No file found.")
 
-    return -1
+    return None
 
 
 def decode_json(json_file):
@@ -30,13 +30,13 @@ def decode_json(json_file):
     If there is an issue decoding the JSON file then a new users dict is started from scratch.
     """
 
-    # If the file is not found, json_file will be -1 and the dict is started from scratch.
-    if json_file == -1:
+    # If the file is not found, json_file will be None and the dict is started from scratch.
+    if json_file == None:
         return {"guild":{}}
 
     import json
 
-    data = -1
+    data = None
     try:
         data = json.loads(json_file)
     except json.decoder.JSONDecodeError as e:
@@ -80,9 +80,9 @@ def remove_from_dict(users_dict, guild_id, discord_name):
         log.error("Guild not found when trying to remove user.")
         return
     
-    user = users_dict["guild"][guild_id].pop(discord_name, -1)
+    user = users_dict["guild"][guild_id].pop(discord_name, None)
 
-    if user == -1:
+    if user == None:
         log.error(f"KeyError when looking for the user in {guild_id}.")
     
     return users_dict
@@ -95,7 +95,7 @@ def get_from_dict(users_dict, guild_id, discord_name):
     try:
         user = users_dict["guild"][guild_id].pop(discord_name)
     except KeyError as e:
-        user = -1
+        user = None
     return user
 
 
