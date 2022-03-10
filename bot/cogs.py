@@ -51,7 +51,7 @@ class UserManagement(slash_util.Cog):
         helpers.write_file("./bot/users.json", new_dict)
 
         # Send confirmation of completion to the messenger
-        await ctx.send(f"Your Fault username has been updated to **{fault_user['username']}**(id: {fault_user['id']}). Use this command again if you would like to change it.")
+        await ctx.send(f"Your Fault username has been updated to **{fault_user['username']}** (id: {fault_user['id']}). Use this command again if you would like to change it.")
 
 
     @slash_util.slash_command(guild_id=GUILD, name="unregister", description="Remove all Fault usernames associated with your discord user.")
@@ -94,7 +94,7 @@ class UserManagement(slash_util.Cog):
         if user == None:
             await ctx.send("There is no Fault name registered to your discord name.")
         else:
-            await ctx.send(f"Your registered Fault user name is **{user['username']}** (id: {user['id']}")
+            await ctx.send(f"Your registered Fault user name is **{user['username']}** (id: {user['id']}).")
 
 
     """
