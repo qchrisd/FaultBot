@@ -4,7 +4,8 @@ Contains unit tests for the CommandFunctions module.
 
 import unittest
 import unittest.mock as mock
-from bot.cog_helpers import (update_dict, 
+from bot.cog_helpers import (read_file, 
+                             update_dict, 
                              remove_from_dict,
                              get_from_dict)
 
@@ -12,9 +13,11 @@ from bot.cog_helpers import (update_dict,
 class TestCogHelpers(unittest.TestCase):
 
 
-    @mock.patch(open)
+    @mock.patch("bot.cog_helpers.open", new_callable=mock.mock_open, read_data='{"guild":{}}')
     def test_read_file(self, mock_open):
-        pass
+        # Found file
+        actual = read_file("./bot/users.json")
+        self.assertEqual(actual, '{"guild":{}}')
 
 
     def test_update_dict(self):
