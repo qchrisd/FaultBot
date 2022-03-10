@@ -23,6 +23,16 @@ class TestCogHelpers(unittest.TestCase):
         self.assertEqual(actual, None)
 
 
+    @unittest.skip("No test written")
+    def test_decode_json(self):
+        pass
+
+
+    @unittest.skip("no test written")
+    def test_write_file(self):
+        pass
+
+
     def test_update_dict(self):
         actual = update_dict(users_dict = {"guild":{}}, guild_id=123, discord_name="qchrisd#1644", fault_name="qchrisd")
         self.assertEqual(actual, {"guild":{123:{"qchrisd#1644":"qchrisd"}}})
