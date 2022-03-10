@@ -74,26 +74,26 @@ def _check_user_request_response(page_dict):
     """
     Check to see if the request for a player was successful.
     Returns the user JSON if successful.
-    Returns -1 if unsuccessful.
+    Returns None if unsuccessful.
     """
 
     if page_dict['success']:
         user = page_dict['players'][0]
     else:
-        user = -1
+        user = None
     
     return user
 
 
 ## Main
-def get_hero_play_stats(query_website_fn=_query_website):
+def get_hero_play_stats():
     """
     Gets the stats per hero in the format https://api.playfault.com/getStatsPerHero
     Returns a JSON object with the HeroID as the key
     """
 
     page_link = 'https://api.playfault.com/getStatsPerHero'
-    page_dict = query_website_fn(page_link)
+    page_dict = _query_website(page_link)
     
     return page_dict['heroes']
 
@@ -112,33 +112,35 @@ def get_hero_dicts(hero_stats = get_hero_play_stats()):
     return hero_to_id, id_to_hero
 
 
-def get_user(fault_username, query_website_fn=_query_website):
+def get_user(fault_username):
     """
     Gets the usernames and IDs of fault users given a search string.
     Returns a dict.
     """
 
     page_link = f"https://api.playfault.com/searchUsers/{fault_username}"
-    user = query_website_fn(page_link)
+    user = _query_website(page_link)
     
     try:
         user = user[0]
+    except TypeError as e:
+        user = None
     except IndexError as e:
-        user = -1
+        user = None
 
     return user
 
 
-def get_top_players(user, query_website_fn=_query_website):
+def get_top_players(user):
     """ 
     TODO update this method to be useful
     OLD GET_USERS() METHOD. NEEDS REWORK FOR TOP PLAYERS LIST
     Returns a player's information from a username as a dict.
-    Returns -1 if the username is not found.
+    Returns None if the username is not found.
     """
     
     page_link = f'https://api.playfault.com/getTopPlayers/1/{user}'
-    page_dict = query_website_fn(page_link)
+    page_dict = _query_website(page_link)
     
     user = _check_user_request_response(page_dict)
 
@@ -152,24 +154,24 @@ def get_user_id(user, get_user_fn=get_user):
     """
 
     user = get_user_fn(user)
-    if user == -1:
+    if user == None:
         return user
     
     return user["id"]
 
 
-def get_hero_info(hero, query_website_fn=_query_website):
+def get_hero_info(hero):
     """
     Gets the information for a given hero.
     """
 
     page_link = f"https://api.playfault.com/heroData/{hero}"
-    page_json = query_website_fn(page_link)
+    page_json = _query_website(page_link)
 
     return page_json
 
 
-def get_items(query_website_fn=_query_website):
+def get_items():
     """
     Gets the list of items from the website.
     Returns a dict.
@@ -177,12 +179,12 @@ def get_items(query_website_fn=_query_website):
 
     # Gets information from the website
     items_link = "https://api.playfault.com/items"
-    items = query_website_fn(items_link)
+    items = _query_website(items_link)
 
     return items
 
 
-def get_aspects(query_website_fn=_query_website):
+def get_aspects():
     """
     Gets the list of aspects.
     Returns a dict.
@@ -190,78 +192,78 @@ def get_aspects(query_website_fn=_query_website):
 
     # Gets information from the website
     aspects_link = "https://api.playfault.com/aspects"
-    aspects = query_website_fn(aspects_link)
+    aspects = _query_website(aspects_link)
 
     return aspects
 
 
-def get_matches(user, n = 1, query_website_fn=_query_website):
+def get_matches(user, n = 1):
     """
     Gets the last match for a given player.
-    Returns  -1 if no matches were found.
+    Returns  None if no matches were found.
     """
     
     # Check if the user is good
-    if user == -1:
+    if user == None:
         return user
     else:
         user_id = user["ID"]
 
     page_link = f'https://api.playfault.com/getMatches/{user_id}/{n}'
-    page_dict = query_website_fn(page_link)
+    page_dict = _query_website(page_link)
     match = page_dict["matches"][0]
 
     return match
 
 
-def get_match_data(match_id, query_website_fn):
+def get_match_data(match_id):
     """
     Gets match data from the website.
     Returns a dict.
     """
 
     page_link = f'https://api.playfault.com/getMatchData/{match_id}'
-    match = query_website_fn(page_link)
+    match = _query_website(page_link)
 
     return match
 
 
-def get_player_hero_stats(user, query_website_fn=_query_website):
+def get_player_hero_stats(user):
     """
     Gets hero statistics for a specified user.
-    Returns -1 if the player is not found.
+    Returns None if the player is not found.
     """
 
     # Check if the user is good
-    if user == -1:
+    if user == None:
         return user
     else:
         user_id = user["ID"]
     
     # Collect info from Fault website and convert json to dict
     page_link = f'https://api.playfault.com/getPlayerHeroStats/{user_id}'
-    page_dict = query_website_fn(page_link)
+    page_dict = _query_website(page_link)
     player_hero_stats = page_dict["heroes"]
 
     return player_hero_stats
 
 
-def get_elo(user, query_website_fn=_query_website):
+def get_elo(user):
     """
     Gets the MMR and ELO information for an ID. 
     Returns a dict.
-    Returns -1 if no user is found
+    Returns None if no user is found
     """
 
     # Check if the user is good
-    if user == -1:
+    if user == None:
         return user
     else:
         user_id = user["ID"]
 
     # Gets the information from the website
     page_link = f'https://api.playfault.com/getEloData/{user_id}'
-    page_json = query_website_fn(page_link)
+    page_json = _query_website(page_link)
 
     return page_json
 
