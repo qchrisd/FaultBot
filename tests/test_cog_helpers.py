@@ -13,11 +13,14 @@ from bot.cog_helpers import (read_file,
 class TestCogHelpers(unittest.TestCase):
 
 
-    @mock.patch("bot.cog_helpers.open", new_callable=mock.mock_open, read_data='{"guild":{}}')
-    def test_read_file(self, mock_open):
+    def test_read_file(self):
         # Found file
-        actual = read_file("./bot/users.json")
+        with mock.patch("bot.cog_helpers.open", mock.mock_open(read_data='{"guild":{}}')):
+            actual = read_file("./bot/users.json")
         self.assertEqual(actual, '{"guild":{}}')
+        # Did not find file
+        actual = read_file("")
+        self.assertEqual(actual, None)
 
 
     def test_update_dict(self):
