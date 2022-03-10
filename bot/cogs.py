@@ -12,7 +12,8 @@ import slash_util  # Requires discord.py 2.0.0+
 
 # Import custom modules
 import bot.logger as log  # logging.info is set up by the fault_bot module
-import bot.cog_helpers as functions
+import bot.cog_helpers as helpers
+import fault_api as api
 
 
 # Load the environmental variables from the .env file
@@ -35,13 +36,13 @@ class UserManagement(slash_util.Cog):
         guild_id = str(ctx.guild.id)
         discord_name = f"{ctx.author.name}#{ctx.author.discriminator}"
 
-        users_json = functions.read_file("./bot/users.json")
+        users_json = helpers.read_file("./bot/users.json")
             
-        users_dict = functions.decode_json(users_json)
+        users_dict = helpers.decode_json(users_json)
         
-        new_dict = functions.update_dict(users_dict, guild_id, discord_name, fault_name)
+        new_dict = helpers.update_dict(users_dict, guild_id, discord_name, fault_name)
 
-        functions.write_file("./bot/users.json", new_dict)
+        helpers.write_file("./bot/users.json", new_dict)
 
         # Send confirmation of completion to the messenger
         await ctx.send(f"Your Fault username has been updated to {fault_name}. Use this command again if you would like to change it.")
@@ -56,13 +57,13 @@ class UserManagement(slash_util.Cog):
         guild_id = str(ctx.guild.id)
         discord_name = f"{ctx.author.name}#{ctx.author.discriminator}"
 
-        users_json = functions.read_file("./bot/users.json")
+        users_json = helpers.read_file("./bot/users.json")
 
-        users_dict = functions.decode_json(users_json)
+        users_dict = helpers.decode_json(users_json)
 
-        new_dict = functions.remove_from_dict(users_dict, guild_id, discord_name)
+        new_dict = helpers.remove_from_dict(users_dict, guild_id, discord_name)
 
-        functions.write_file("./bot/users.json", new_dict)
+        helpers.write_file("./bot/users.json", new_dict)
 
         # Send confirmation of completion to messenger
         await ctx.send(f"Your Fault user names have been forgotten. User /register to add a new Fault user name.")
@@ -78,11 +79,11 @@ class UserManagement(slash_util.Cog):
         guild_id = str(ctx.guild.id)
         discord_name = f"{ctx.author.name}#{ctx.author.discriminator}"
 
-        users_json = functions.read_file("./bot/users.json")
+        users_json = helpers.read_file("./bot/users.json")
 
-        users_dict = functions.decode_json(users_json)
+        users_dict = helpers.decode_json(users_json)
 
-        user = functions.get_from_dict(users_dict, guild_id, discord_name)
+        user = helpers.get_from_dict(users_dict, guild_id, discord_name)
 
         if user == -1:
             await ctx.send("There is no Fault name registered to your discord name.")
