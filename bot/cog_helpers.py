@@ -5,7 +5,9 @@ Written by Chris Quartararo
 
 """
 
-import bot.logger as log
+# Set up logging
+import bot.logger
+log = bot.logger.setup_logger("./bot/cog_helpers.log", "cog_helpers")
 
 
 def read_file(path):
