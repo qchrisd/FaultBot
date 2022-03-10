@@ -133,3 +133,17 @@ class GameStats(slash_util.Cog):
         """
         Gets ELO for a player and sends an embed with the info.
         """
+
+        # Some easy variables
+        guild_id = str(ctx.guild.id)
+        discord_name = f"{ctx.author.name}#{ctx.author.discriminator}"
+
+        users_json = helpers.read_file("./bot/users.json")
+
+        users_dict = helpers.decode_json(users_json)
+
+        user = helpers.get_from_dict(users_dict, guild_id, discord_name)
+
+        user_elo = api.get_elo(user)
+
+        await ctx.send(f"{user['id']} {user_elo['eloTitle']} ({user_elo['MMR']:.0f})")

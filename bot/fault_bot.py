@@ -17,7 +17,7 @@ import slash_util  # Requires discord.py 2.0.0+
 
 # Import custom modules
 from bot.logger import setup_logger
-from bot.cogs import UserManagement
+import bot.cogs as cogs
 
 
 # Set up logging
@@ -53,7 +53,8 @@ async def on_ready():
 
 
 # Add the cog to the bot
-bot.add_cog(UserManagement(bot))
+bot.add_cog(cogs.UserManagement(bot))
+bot.add_cog(cogs.GameStats(bot))
 
 # Runs the bot
 bot.run(TOKEN)

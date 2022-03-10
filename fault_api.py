@@ -259,7 +259,7 @@ def get_elo(user):
     if user == None:
         return user
     else:
-        user_id = user["ID"]
+        user_id = user["id"]
 
     # Gets the information from the website
     page_link = f'https://api.playfault.com/getEloData/{user_id}'
