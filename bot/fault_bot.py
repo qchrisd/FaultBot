@@ -21,7 +21,7 @@ from bot.cogs import UserManagement
 
 
 # Set up logging
-log = setup_logger("bot/fault_bot.log", "fault_bot")
+log = setup_logger("bot/fault_bot.log", __name__)
 
 # Load the environmental variables from the .env file
 load_dotenv()
