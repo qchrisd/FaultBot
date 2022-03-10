@@ -44,9 +44,9 @@ class TestCogHelpers(unittest.TestCase):
 
 
     def test_get_from_dict(self):
-        users_dict = {"guild":{123:{"qchrisd#1644":"qchrisd"}}}
+        users_dict = {"guild":{123:{"qchrisd#1644":{"id":29016, "username":"qchrisd"}}}}
         actual = get_from_dict(users_dict, guild_id=123, discord_name= "qchrisd#1644")
-        self.assertEqual(actual, "qchrisd")
+        self.assertEqual(actual, {"id":29016, "username":"qchrisd"})
 
 
 
