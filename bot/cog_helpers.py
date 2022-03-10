@@ -107,3 +107,7 @@ def match_info(ctx):
     
     msg_author = ctx.author
     return f"Found user {msg_author}"
+
+
+def get_elo(ctx):
+    pass
