@@ -39,13 +39,19 @@ class UserManagement(slash_util.Cog):
         users_json = helpers.read_file("./bot/users.json")
             
         users_dict = helpers.decode_json(users_json)
+
+        fault_user = api.get_user(fault_name)
+
+        if fault_user == None:
+            await ctx.send(f"Sorry, I couldn't find **{fault_name}**. Check your spelling and try again.")
+            return
         
-        new_dict = helpers.update_dict(users_dict, guild_id, discord_name, fault_name)
+        new_dict = helpers.update_dict(users_dict, guild_id, discord_name, fault_user)
 
         helpers.write_file("./bot/users.json", new_dict)
 
         # Send confirmation of completion to the messenger
-        await ctx.send(f"Your Fault username has been updated to {fault_name}. Use this command again if you would like to change it.")
+        await ctx.send(f"Your Fault username has been updated to **{fault_user['username']}**(id: {fault_user['id']}). Use this command again if you would like to change it.")
 
 
     @slash_util.slash_command(guild_id=GUILD, name="unregister", description="Remove all Fault usernames associated with your discord user.")
@@ -88,7 +94,7 @@ class UserManagement(slash_util.Cog):
         if user == None:
             await ctx.send("There is no Fault name registered to your discord name.")
         else:
-            await ctx.send(f"Your registered Fault user name is {user}")
+            await ctx.send(f"Your registered Fault user name is **{user['username']}** (id: {user['id']}")
 
 
     """
@@ -124,4 +130,6 @@ class GameStats(slash_util.Cog):
 
     @slash_util.slash_command(guild_id=GUILD, name="elo", description="Look at your player MMR and rank.")
     async def elo(self, ctx):
-        pass
+        """
+        Gets ELO for a player and sends an embed with the info.
+        """
