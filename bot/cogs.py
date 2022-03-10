@@ -20,7 +20,7 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN_DEV')
 GUILD = os.getenv('DISCORD_GUILDID_DEV')
 
-# Cog for slash_command()s
+# Cog for user slash_command()s
 class UserManagement(slash_util.Cog):
 
     @slash_util.slash_command(guild_id=GUILD, name="register", description="Associate or change a Fault username with your discord user.")
@@ -116,3 +116,11 @@ class UserManagement(slash_util.Cog):
         test_string = functions.match_info(ctx)
         await ctx.send(test_string)
         """
+
+
+# Cog for stats commands
+class GameStats(slash_util.Cog):
+
+    @slash_util.slash_command(guild_id=GUILD, name="elo", description="Look at your player MMR and rank.")
+    async def elo(self, ctx):
+        pass
