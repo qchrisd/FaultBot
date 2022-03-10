@@ -16,13 +16,12 @@ from dotenv import load_dotenv  # Package titled python-dotenv
 import slash_util  # Requires discord.py 2.0.0+
 
 # Import custom modules
-import bot.logger as log
+from bot.logger import setup_logger
 from bot.cogs import UserManagement
 
 
 # Set up logging
-log.setup_info("bot/fault_bot.log")
-log.setup_error("bot/fault_bot.log")
+log = setup_logger("bot/fault_bot.log", "fault_bot")
 
 # Load the environmental variables from the .env file
 load_dotenv()
