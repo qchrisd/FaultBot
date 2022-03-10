@@ -299,6 +299,19 @@ def get_image_hero_portrait(hero_id):
     image_link = f"https://api.playfault.com/imagecdn/portraits/{hero_id}.jpg"
 
 
+def get_player_avatar(user):
+    """
+    Gets the avatar of the given user.
+    Returns a link.
+    """
+
+    if user == None:
+        return None
+
+    image_link = f"https://api.playfault.com/imagecdn/avatars/{user['id']}.jpg"
+
+    return image_link
+
 
 if __name__ == '__main__':
     print("File called directly.")
