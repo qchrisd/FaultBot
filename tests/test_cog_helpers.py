@@ -7,7 +7,8 @@ import unittest.mock as mock
 from bot.cog_helpers import (read_file, 
                              update_dict, 
                              remove_from_dict,
-                             get_from_dict)
+                             get_from_dict,
+                             embed_elo)
 
 
 class TestCogHelpers(unittest.TestCase):
@@ -48,6 +49,30 @@ class TestCogHelpers(unittest.TestCase):
         actual = get_from_dict(users_dict, guild_id=123, discord_name= "qchrisd#1644")
         self.assertEqual(actual, {"id":29016, "username":"qchrisd"})
 
+
+    def test_embed_elo(self):
+        fault_name = "qchrisd"
+        elo_title = "Silver"
+        mmr = 1200
+        ranking = 222
+        avatar_link = "avatar.link"
+
+        expected = {
+        "color": 0x808080,
+        "author": {
+            "name":f"{fault_name}",
+            "icon_url":f"{avatar_link}"
+        },
+        "fields":[
+            {"name": "Rank", "value":f"{elo_title}", "inline":True},
+            {"name": "MMR", "value":f"{mmr:.0f}", "inline":True},
+            {"name": "Position", "value":f"{ranking}", "inline":True}
+        ]
+        }
+
+        actual = embed_elo(fault_name, elo_title, mmr, ranking, avatar_link)
+
+        self.assertEqual(actual.to_dict(), expected)
 
 
 if __name__ == '__main__':
