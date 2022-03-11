@@ -5,6 +5,10 @@ Written by Chris Quartararo
 
 """
 
+# imports
+from turtle import color
+import discord
+
 # Set up logging
 import bot.logger
 log = bot.logger.setup_logger("./bot/cog_helpers.log", "cog_helpers")
@@ -111,5 +115,34 @@ def match_info(ctx):
     return f"Found user {msg_author}"
 
 
-def get_elo(ctx):
-    pass
+def embed_elo(fault_name, elo_title, mmr, ranking, avatar_link):
+    """
+    Creates an embedded message to send to a discord server.
+    """
+
+    colors = {
+        "Bronze": 0xD36210,
+        "Silver": 0x808080,
+        "Gold": 0xFBC02D,
+        "Platinum": 0x0FB96D,
+        "Diamond": 0x03A9F4,
+        "Master": 0x9C27B0
+    }
+
+    dict = {
+        "color": colors[elo_title],
+        "author": {
+            "name":f"{fault_name}",
+            "icon_url":f"{avatar_link}"
+        },
+        "fields":[
+            {"name": "Rank", "value":f"{elo_title}", "inline":True},
+            {"name": "MMR", "value":f"{mmr:.0f}", "inline":True},
+            {"name": "Position", "value":f"{ranking}", "inline":True}
+        ]
+    }
+
+    embed = discord.Embed.from_dict(dict)
+
+    return embed
+

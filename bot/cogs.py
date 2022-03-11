@@ -146,4 +146,9 @@ class GameStats(slash_util.Cog):
 
         user_elo = api.get_elo(user)
 
-        await ctx.send(f"{user['id']} {user_elo['eloTitle']} ({user_elo['MMR']:.0f})")
+        avatar_link = api.get_player_avatar(user)
+
+        embed_message = helpers.embed_elo(user['username'], user_elo['eloTitle'], user_elo['MMR'], user_elo['ranking'], avatar_link['avatarURI'])
+
+        await ctx.send(embed=embed_message)
+#        await ctx.send(f"{user['id']} {user_elo['eloTitle']} ({user_elo['MMR']:.0f})")
