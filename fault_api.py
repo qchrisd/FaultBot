@@ -238,7 +238,7 @@ def get_player_hero_stats(user):
     if user == None:
         return user
     else:
-        user_id = user["ID"]
+        user_id = user["id"]
     
     # Collect info from Fault website and convert json to dict
     page_link = f'https://api.playfault.com/getPlayerHeroStats/{user_id}'
@@ -251,8 +251,17 @@ def get_player_hero_stats(user):
 def get_elo(user):
     """
     Gets the MMR and ELO information for an ID. 
-    Returns a dict.
     Returns None if no user is found
+
+    Return dict:
+    {
+        "id": 0,
+        "username": "NA",
+        "eloTitle": "Silver",
+        "MMR": 0,
+        "ranking": 0,
+        "placementGamesRemain": 0
+    }
     """
 
     # Check if the user is good
@@ -302,15 +311,16 @@ def get_image_hero_portrait(hero_id):
 def get_player_avatar(user):
     """
     Gets the avatar of the given user.
-    Returns a link.
+    Returns a dict with avatarId and avatarURI
     """
 
     if user == None:
         return None
 
-    image_link = f"https://api.playfault.com/imagecdn/avatars/{user['id']}.jpg"
+    page_link = f"https://api.playfault.com/userAvatar/{user['id']}"
+    page_json = _query_website(page_link)
 
-    return image_link
+    return page_json
 
 
 if __name__ == '__main__':
