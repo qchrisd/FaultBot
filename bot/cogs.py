@@ -11,7 +11,7 @@ import discord  # v2.0.0 found at (git+https://github.com/Rapptz/discord.py)
 import slash_util  # Requires discord.py 2.0.0+
 
 # Import custom modules
-import bot.logger as log  # logging.info is set up by the fault_bot module
+import bot.logger
 import bot.cog_helpers as helpers
 import fault_api as api
 
@@ -20,6 +20,10 @@ import fault_api as api
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN_DEV')
 GUILD = os.getenv('DISCORD_GUILDID_DEV')
+
+# Set up logging
+log = bot.logger.setup_logger("./bot/fault_bot.log", "cogs")
+
 
 # Cog for user slash_command()s
 class UserManagement(slash_util.Cog):
@@ -36,6 +40,9 @@ class UserManagement(slash_util.Cog):
         guild_id = str(ctx.guild.id)
         discord_name = f"{ctx.author.name}#{ctx.author.discriminator}"
 
+        # Log
+        log.info(f"Registering {discord_name}")
+
         users_json = helpers.read_file("./bot/users.json")
             
         users_dict = helpers.decode_json(users_json)
@@ -44,6 +51,7 @@ class UserManagement(slash_util.Cog):
 
         if fault_user == None:
             await ctx.send(f"Sorry, I couldn't find **{fault_name}**. Check your spelling and try again.")
+            log.error(f"Failed to find {fault_name}.")
             return
         
         new_dict = helpers.update_dict(users_dict, guild_id, discord_name, fault_user)
@@ -62,6 +70,9 @@ class UserManagement(slash_util.Cog):
         # Some easy variables
         guild_id = str(ctx.guild.id)
         discord_name = f"{ctx.author.name}#{ctx.author.discriminator}"
+
+        # Log
+        log.info(f"Unregistering {discord_name}.")
 
         users_json = helpers.read_file("./bot/users.json")
 
@@ -85,6 +96,9 @@ class UserManagement(slash_util.Cog):
         guild_id = str(ctx.guild.id)
         discord_name = f"{ctx.author.name}#{ctx.author.discriminator}"
 
+        # Log
+        log.info(f"Getting Fault user for {discord_name}.")
+
         users_json = helpers.read_file("./bot/users.json")
 
         users_dict = helpers.decode_json(users_json)
@@ -93,6 +107,7 @@ class UserManagement(slash_util.Cog):
 
         if user == None:
             await ctx.send("There is no Fault name registered to your discord name.")
+            log.error(f"Failed to find {user['username']} in users.json.")
         else:
             await ctx.send(f"Your registered Fault user name is **{user['username']}** (id: {user['id']}).")
 
@@ -144,8 +159,12 @@ class GameStats(slash_util.Cog):
 
             user = helpers.get_from_dict(users_dict, guild_id, discord_name)
 
+            # Log
+            log.info(f"Getting elo for {discord_name}.")
+
             if user == None:
                 await ctx.send(f"I couldn't find any registered Fault user name for {discord_name} user. Try using /register to save one.")
+                log.error(f"Failed to find user {discord_name} in users.json.")
                 return
         
         else:
@@ -153,6 +172,7 @@ class GameStats(slash_util.Cog):
 
             if user == None:
                 await ctx.send(f"I couldn't find {fault_name}. Check your spelling and try again.")
+                log.error(f"Failed to get user {fault_name} from Fault website.")
                 return
 
         user_elo = api.get_elo(user)
