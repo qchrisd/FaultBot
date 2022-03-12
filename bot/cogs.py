@@ -129,20 +129,31 @@ class UserManagement(slash_util.Cog):
 class GameStats(slash_util.Cog):
 
     @slash_util.slash_command(guild_id=GUILD, name="elo", description="Look at your player MMR and rank.")
-    async def elo(self, ctx):
+    async def elo(self, ctx, fault_name: str=None):
         """
         Gets ELO for a player and sends an embed with the info.
         """
 
-        # Some easy variables
-        guild_id = str(ctx.guild.id)
-        discord_name = f"{ctx.author.name}#{ctx.author.discriminator}"
+        if fault_name == None:
+            guild_id = str(ctx.guild.id)
+            discord_name = f"{ctx.author.name}#{ctx.author.discriminator}"
 
-        users_json = helpers.read_file("./bot/users.json")
+            users_json = helpers.read_file("./bot/users.json")
 
-        users_dict = helpers.decode_json(users_json)
+            users_dict = helpers.decode_json(users_json)
 
-        user = helpers.get_from_dict(users_dict, guild_id, discord_name)
+            user = helpers.get_from_dict(users_dict, guild_id, discord_name)
+
+            if user == None:
+                await ctx.send(f"I couldn't find any registered Fault user name for {discord_name} user. Try using /register to save one.")
+                return
+        
+        else:
+            user = api.get_user(fault_name)
+
+            if user == None:
+                await ctx.send(f"I couldn't find {fault_name}. Check your spelling and try again.")
+                return
 
         user_elo = api.get_elo(user)
 
