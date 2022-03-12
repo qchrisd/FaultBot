@@ -132,8 +132,8 @@ def embed_elo(fault_name, elo_title, mmr, ranking, avatar_link):
     dict = {
         "color": colors[elo_title],
         "author": {
-            "name":f"{fault_name}",
-            "icon_url":f"{avatar_link}"
+            "name": f"{fault_name}",
+            "icon_url": f"{avatar_link}"
         },
         "fields":[
             {"name": "Rank", "value":f"{elo_title}", "inline":True},

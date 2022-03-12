@@ -150,5 +150,10 @@ class GameStats(slash_util.Cog):
 
         embed_message = helpers.embed_elo(user['username'], user_elo['eloTitle'], user_elo['MMR'], user_elo['ranking'], avatar_link['avatarURI'])
 
-        await ctx.send(embed=embed_message)
+        # Adds rank image to embed. This uploads the image every time.
+        # TODO figure out how to use a CDN to be able to pass a url and not upload images for every call
+        rank_image = discord.File(f"./assets/icons_rank/{user_elo['eloTitle']}.png", filename=f"{user_elo['eloTitle']}.png")
+        embed_message.set_thumbnail(url=f"attachment://{user_elo['eloTitle']}.png")
+
+        await ctx.send(embed=embed_message, file=rank_image)
 #        await ctx.send(f"{user['id']} {user_elo['eloTitle']} ({user_elo['MMR']:.0f})")
