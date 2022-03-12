@@ -16,7 +16,6 @@ To Do:
 - hero win statistics and pick rates
 - Document aspect labels
 
-Last Update: 3/1/2022
 
 '''
 
@@ -89,7 +88,35 @@ def _check_user_request_response(page_dict):
 def get_hero_play_stats():
     """
     Gets the stats per hero in the format https://api.playfault.com/getStatsPerHero
-    Returns a JSON object with the HeroID as the key
+    Returns a JSON object with the HeroID as the key.
+    
+    JSON
+    {
+        "heroes": {
+            "{heroName}": {
+                "wins": 0,
+                "games": 0,
+                "averageGameTime": "string",
+                "averageLevel": 0,
+                "kills": 0,
+                "deaths": 0,
+                "assists": 0,
+                "damage": 0,
+                "damageTaken": 0,
+                "gold": 0,
+                "pickRate": 0.0,
+                "winRate": 0.0,
+                "kda": 0.0,
+                "killsPerMin": 0.0,
+                "deathsPerMin": 0.0,
+                "assistsPerMin": 0.0,
+                "damagePerMin": 0.0,
+                "damageTakenPerMin": 0.0,
+                "goldPerMin": 0.0,
+                "Id": 0
+            }
+        }
+    }
     """
 
     page_link = 'https://api.playfault.com/getStatsPerHero'
@@ -116,6 +143,14 @@ def get_user(fault_username):
     """
     Gets the usernames and IDs of fault users given a search string.
     Returns a dict.
+
+    JSON
+    [
+        {
+            "id": 0,
+            "username": "string"
+        }
+    ]
     """
 
     page_link = f"https://api.playfault.com/searchUsers/{fault_username}"
@@ -137,6 +172,37 @@ def get_top_players(user):
     OLD GET_USERS() METHOD. NEEDS REWORK FOR TOP PLAYERS LIST
     Returns a player's information from a username as a dict.
     Returns None if the username is not found.
+
+    JSON
+    {
+        "success": true,
+        "players": 
+        [
+            {
+                "rank": 0,
+                "id": 0,
+                "name": "string",
+                "elo": 0.0,
+                "eloType": "string",
+                "winRate": 0.0,
+                "totalGames": 0,
+                "totalKills": 0,
+                "totalDeaths": 0,
+                "totalAssists": 0,
+                "mostPlayedHeroes": 
+                [
+                    {
+                        "HeroID": 0,
+                        "Count": 0
+                    },
+                    {
+                        "HeroID": 0,
+                        "Count": 0
+                    }
+                ]
+            }
+        ]
+    }
     """
     
     page_link = f'https://api.playfault.com/getTopPlayers/1/{user}'
@@ -163,6 +229,59 @@ def get_user_id(user, get_user_fn=get_user):
 def get_hero_info(hero):
     """
     Gets the information for a given hero.
+
+    {
+        "info": {
+            "basicRange": "string",
+            "niche": "string",
+            "role": "string",
+            "damageType": "string",
+            "description": "string"
+        },
+        "health": 0,
+        "healthPerLevel": 0,
+        "healthRegen": 0,
+        "healthRegenPerLevel": 0,
+        "mana": 0,
+        "manaPerLevel": 0,
+        "manaRegen": 0,
+        "manaRegenPerLevel": 0,
+        "physicalArmor": 0,
+        "physicalArmorPerLevel": 0,
+        "energyArmor": 0,
+        "energyArmorPerLevel": 0,
+        "movespeed": 0,
+        "lmb": {
+            "name": "string",
+            "description": "string",
+            "anyOtherAttribute": 0
+        },
+        "rmb": {
+            "name": "string",
+            "description": "string",
+            "anyOtherAttribute": 0
+        },
+        "q": {
+            "name": "string",
+            "description": "string",
+            "anyOtherAttribute": 0
+        },
+        "e": {
+            "name": "string",
+            "description": "string",
+            "anyOtherAttribute": 0
+        },
+        "r": {
+            "name": "string",
+            "description": "string",
+            "anyOtherAttribute": 0
+        },
+        "p": {
+            "name": "string",
+            "description": "string",
+            "anyOtherAttribute": 0
+        }
+    }
     """
 
     page_link = f"https://api.playfault.com/heroData/{hero}"
@@ -175,6 +294,36 @@ def get_items():
     """
     Gets the list of items from the website.
     Returns a dict.
+
+    {
+        "id": 
+        {
+            "id": 0,
+            "name": "string",
+            "parents": 
+            [
+                0
+            ],
+            "children": 
+            [
+                0
+            ],
+            "treeId": 0,
+            "attributes": 
+            [
+                {
+                    "AttributeName": "string",
+                    "Value": 0,
+                    "RankValue": 0,
+                    "UIDetails": "string"
+                }
+            ],
+            "passive": "string",
+            "active": "string",
+            "cost": "string",
+            "color": "string"
+        }
+    }
     """
 
     # Gets information from the website
@@ -188,6 +337,15 @@ def get_aspects():
     """
     Gets the list of aspects.
     Returns a dict.
+
+    [
+        {
+            "name": "string",
+            "color": "string",
+            "effect1": "string",
+            "effect2": "string"
+        }
+    ]
     """
 
     # Gets information from the website
@@ -201,6 +359,47 @@ def get_matches(user, n = 1):
     """
     Gets the last match for a given player.
     Returns  None if no matches were found.
+
+    {
+        "success": true,
+        "matches": 
+        [
+            {
+                "id": 0,
+                "winner": 0,
+                "timeLength": "string",
+                "startDateTime": "string",
+                "status": 0,
+                "players": 
+                [
+                    {
+                        "playerId": 0,
+                        "team": 0,
+                        "heroId": 0,
+                        "heroLevel": 0,
+                        "kills": 0,
+                        "deaths": 0,
+                        "assists": 0,
+                        "heroDamage": 0,
+                        "damageTaken": 0,
+                        "gold": 0,
+                        "card1": 0,
+                        "card2": 0,
+                        "item1": 0,
+                        "item2": 0,
+                        "item3": 0,
+                        "item4": 0,
+                        "item5": 0,
+                        "item6": 0,
+                        "cs": 0,
+                        "username": "string",
+                        "mmr": 0,
+                        "mmrChange": 0
+                    }
+                ]
+            }
+        ]
+    }
     """
     
     # Check if the user is good
@@ -220,6 +419,41 @@ def get_match_data(match_id):
     """
     Gets match data from the website.
     Returns a dict.
+
+    {
+        "id": 0,
+        "winner": 0,
+        "timeLength": "string",
+        "startDateTime": "string",
+        "status": 0,
+        "players": 
+        [
+            {
+                "playerId": 0,
+                "team": 0,
+                "heroId": 0,
+                "heroLevel": 0,
+                "kills": 0,
+                "deaths": 0,
+                "assists": 0,
+                "heroDamage": 0,
+                "damageTaken": 0,
+                "gold": 0,
+                "card1": 0,
+                "card2": 0,
+                "item1": 0,
+                "item2": 0,
+                "item3": 0,
+                "item4": 0,
+                "item5": 0,
+                "item6": 0,
+                "cs": 0,
+                "username": "string",
+                "mmr": 0,
+                "mmrChange": 0
+            }
+        ]
+    }
     """
 
     page_link = f'https://api.playfault.com/getMatchData/{match_id}'
@@ -232,6 +466,20 @@ def get_player_hero_stats(user):
     """
     Gets hero statistics for a specified user.
     Returns None if the player is not found.
+
+    {
+        "heroes": 
+        {
+            heroID: 
+            {
+                "wins": 0,
+                "games": 0,
+                "kills": 0,
+                "deaths": 0,
+                "assists": 0
+            }
+        }
+    }
     """
 
     # Check if the user is good
@@ -253,11 +501,11 @@ def get_elo(user):
     Gets the MMR and ELO information for an ID. 
     Returns None if no user is found
 
-    Return dict:
+    JSON
     {
         "id": 0,
-        "username": "NA",
-        "eloTitle": "Silver",
+        "username": "string",
+        "eloTitle": "string",
         "MMR": 0,
         "ranking": 0,
         "placementGamesRemain": 0
@@ -312,6 +560,11 @@ def get_player_avatar(user):
     """
     Gets the avatar of the given user.
     Returns a dict with avatarId and avatarURI
+
+    {
+        "avatarId": 0,
+        "avatarURI": "https://api.playfault.com/imagecdn/avatars/{avatarId}.jpg"
+    }
     """
 
     if user == None:
