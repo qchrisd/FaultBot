@@ -112,33 +112,6 @@ class UserManagement(slash_util.Cog):
             await ctx.send(f"Your registered Fault user name is **{user['username']}** (id: {user['id']}).")
 
 
-    """
-    @slash_util.slash_command(guild_id=GUILD)
-    async def send_test_embed(self, ctx):
-        # Creating new test embed
-        test = discord.Embed(title='This is the first embed', 
-            description='this is the \n multiline description **with markdown**',
-            color=discord.Color.purple())
-
-        # Test the footer
-        test.set_footer(text='Test for a footer')
-        test.set_author(name='FaultBot')
-        test.add_field(name='test **field**', value='test **value** \n newline')
-        test.add_field(name='test *field* 2', value='value 2')
-        test.add_field(name='test field 3', value='value 3', inline=False)
-
-        print(test.to_dict())
-
-        # Test sending the embed
-        await ctx.send(embed=test)
-
-
-    @slash_util.slash_command(guild_id=GUILD, name="match")
-    async def match_info(self, ctx):
-        test_string = functions.match_info(ctx)
-        await ctx.send(test_string)
-        """
-
 
 # Cog for stats commands
 class GameStats(slash_util.Cog):
@@ -187,4 +160,3 @@ class GameStats(slash_util.Cog):
         embed_message.set_thumbnail(url=f"attachment://{user_elo['eloTitle']}.png")
 
         await ctx.send(embed=embed_message, file=rank_image)
-#        await ctx.send(f"{user['id']} {user_elo['eloTitle']} ({user_elo['MMR']:.0f})")
