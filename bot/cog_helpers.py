@@ -6,6 +6,7 @@ Written by Chris Quartararo
 """
 
 # imports
+from dataclasses import fields
 from turtle import color
 import discord
 
@@ -146,3 +147,59 @@ def embed_elo(fault_name, elo_title, mmr, ranking, avatar_link):
 
     return embed
 
+
+def embed_match(match_details, id_to_hero):
+    """
+    Create two embeds, one for the winning team and one for the losing team.
+    """
+    
+    colors = {"win":0x00dc04, "lose":0xef0000}
+
+    footer = {"text":f"{match_details['timeLength']} - id:{match_details['id']}"}
+
+    team_win = match_details['winner']
+    team_lose = int(not match_details['winner'])
+
+    fields_win = []
+    fields_lose = []
+
+    elo_win = 0
+    elo_lose = 0
+    
+    for player in match_details['players']:
+        new_field_title = f"{id_to_hero[player['heroId']]}"
+        new_field_value = f"{player['username']}: ELO {player['mmr']:.0f} ({player['mmrChange']:.0f})"
+        new_field = {"name":new_field_title, "value": new_field_value, "inline": False}
+
+        if player['team'] == match_details['winner']:
+            fields_win.append(new_field)
+            elo_win += player['mmr']
+        else:
+            fields_lose.append(new_field)
+            elo_lose += player['mmr']
+
+    elo_win_average = elo_win/len(fields_win)
+    elo_lose_average = elo_lose/len(fields_lose)
+
+    title_win = f"Team {team_win} - Average ELO {elo_win_average:.0f}"
+    title_lose = f"Team {team_lose} - Average ELO {elo_lose_average:.0f}"
+
+    dict_win = {
+        "color":colors['win'],
+        "author":{"name":"Winner"},
+        "title":title_win,
+        "fields":fields_win,
+        "footer":footer
+    }
+    dict_lose = {
+        "color":colors['lose'],
+        "author":{"name":"Loser"},
+        "title":title_lose,
+        "fields":fields_lose,
+        "footer":footer
+    }
+
+    embed_win = discord.Embed.from_dict(dict_win)
+    embed_lose = discord.Embed.from_dict(dict_lose)
+
+    return embed_win, embed_lose

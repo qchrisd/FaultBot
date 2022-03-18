@@ -160,3 +160,45 @@ class GameStats(slash_util.Cog):
         embed_message.set_thumbnail(url=f"attachment://{user_elo['eloTitle']}.png")
 
         await ctx.send(embed=embed_message, file=rank_image)
+
+
+    @slash_util.slash_command(guild_id=GUILD, name="match", description="Get match information.")
+    async def match(self, ctx, fault_name:str = None, number:int = None, match_id:str = None):
+        """
+        Gets match information for a given user or registered user.
+        Currently supports only one match.
+        """
+
+        if fault_name == None:
+            guild_id = str(ctx.guild.id)
+            discord_name = f"{ctx.author.name}#{ctx.author.discriminator}"
+
+            users_json = helpers.read_file("./bot/users.json")
+
+            users_dict = helpers.decode_json(users_json)
+
+            user = helpers.get_from_dict(users_dict, guild_id, discord_name)
+
+            # Log
+            log.info(f"Getting elo for {discord_name}.")
+
+            if user == None:
+                await ctx.send(f"I couldn't find any registered Fault user name for {discord_name} user. Try using /register to save one.")
+                log.error(f"Failed to find user {discord_name} in users.json.")
+                return
+
+        else:
+            user = api.get_user(fault_name)
+
+            if user == None:
+                await ctx.send(f"I couldn't find {fault_name}. Check your spelling and try again.")
+                log.error(f"Failed to get user {fault_name} from Fault website.")
+                return
+        
+        match = api.get_matches(user)
+        _, id_to_hero = api.get_hero_dicts()
+
+        embed_win, embed_lose = helpers.embed_match(match, id_to_hero)
+
+        await ctx.send(embed=embed_win)
+        await ctx.send(embed=embed_lose)
