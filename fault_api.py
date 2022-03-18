@@ -406,7 +406,7 @@ def get_matches(user, n = 1):
     if user == None:
         return user
     else:
-        user_id = user["ID"]
+        user_id = user["id"]
 
     page_link = f'https://api.playfault.com/getMatches/{user_id}/{n}'
     page_dict = _query_website(page_link)
