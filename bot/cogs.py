@@ -18,8 +18,8 @@ import fault_api as api
 
 # Load the environmental variables from the .env file
 load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN_DEV')
-GUILD = os.getenv('DISCORD_GUILDID_DEV')
+TOKEN = os.getenv('DISCORD_TOKEN')
+GUILD = os.getenv('DISCORD_GUILDID')
 
 # Set up logging
 log = bot.logger.setup_logger("./bot/fault_bot.log", "cogs")
