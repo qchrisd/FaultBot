@@ -200,5 +200,4 @@ class GameStats(slash_util.Cog):
 
         embed_win, embed_lose = helpers.embed_match(match, id_to_hero)
 
-        await ctx.send(embed=embed_win)
-        await ctx.send(embed=embed_lose)
+        await ctx.send(embeds=[embed_win, embed_lose])
