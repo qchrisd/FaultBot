@@ -13,7 +13,7 @@ To Do:
  - Change the messaging function to embeded messages for better readability and formatting.
  - Add functinality to FaultAPI.py to collect hero pick rates and win rates.
 
- # Fault API
+# Fault API
  Fault information that can be received
   - Items (https://api.playfault.com/items)
   - Search the leaderboards for a user by name (https://api.playfault.com/getTopPlayers/50/<User Name>)
@@ -26,3 +26,11 @@ To Do:
   - Get URL for player avatar by player ID (https://api.playfault.com/userAvatar/<player ID>) *avatarURI holds the link to the avatar
   - Get an avatar by image ID (https://api.playfault.com/imagecdn/avatars/<Image ID>.jpg)
 
+# File Descriptions
+ - FaultBot.py contains code to create and authenticate a bot to connect to the server
+ - cogs.py contains the commands and helper methods that are called by the bot. Cogs are bound to the bot in FaultBot.py
+ - CommandFunctions.py contains pure helper methods for cogs.py to allow for unit testing of as much cude as possible.
+ - FaultAPI.py contains the calls to the Fault API and will return this information as python dictionaries
+ - FaultFormat.py contains methods that format messages to be sent through discord. **This file needs updating**
+ - users.json holds persistent information about a discord user's fault username.
+ - .env holds environment variables that are private.

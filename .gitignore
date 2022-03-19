@@ -2,3 +2,11 @@
 *.pyc
 *.code-workspace
 *.log
+*.json
+test.py
+tempCodeRunnerFile.py
+ArchivedMethods.py
+
+# IDE files
+**/.idea
+FaultBot.log
