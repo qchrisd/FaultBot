@@ -6,8 +6,6 @@ Written by Chris Quartararo
 """
 
 # imports
-from dataclasses import fields
-from turtle import color
 import discord
 
 # Set up logging
