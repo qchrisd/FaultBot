@@ -79,28 +79,28 @@ class TestCogHelpers(unittest.TestCase):
     
     def test_embed_match(self):
         match_details = {
-                            "id": 123,
-                            "winner": 1,
-                            "timeLength": "1:00:20",
-                            "startDateTime": "date String",
-                            "status": 2,
-                            "players": 
+                            "ID": 123,
+                            "Winner": 1,
+                            "TimeLength": "1:00:20",
+                            "StartDateTime": "date String",
+                            "Status": 2,
+                            "Players": 
                             [
                                 {
-                                    "playerId": 29016,
-                                    "username": "qchrisd",
-                                    "team": 0,
-                                    "heroId": 4,
-                                    "mmr": 1200,
-                                    "mmrChange": -15
+                                    "PlayerID": 29016,
+                                    "Username": "qchrisd",
+                                    "Team": 0,
+                                    "HeroID": 4,
+                                    "MMR": 1200,
+                                    "MMRChange": -15
                                 },
                                 {
-                                    "playerId": 6969,
-                                    "username": "saxy_beast",
-                                    "team": 1,
-                                    "heroId": 6,
-                                    "mmr": 1100,
-                                    "mmrChange": 15
+                                    "PlayerID": 6969,
+                                    "Username": "saxy_beast",
+                                    "Team": 1,
+                                    "HeroID": 6,
+                                    "MMR": 1100,
+                                    "MMRChange": 15
                                 }
                             ]
                         }
