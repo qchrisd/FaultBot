@@ -572,6 +572,8 @@ def get_image_hero_portrait(hero_id):
 
     image_link = f"https://api.playfault.com/imagecdn/portraits/{hero_id}.jpg"
 
+    return image_link
+
 
 def get_player_avatar(user):
     """

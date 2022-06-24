@@ -77,7 +77,9 @@ class TestCogHelpers(unittest.TestCase):
         self.assertEqual(actual.to_dict(), expected)
 
     
-    def test_embed_match(self):
+    @mock.patch("fault_api.get_player_avatar", return_value="https://api.playfault.com/imagecdn/avatars/21034.jpg")
+    @mock.patch("fault_api.get_image_hero_portrait", return_value = "https://api.playfault.com/imagecdn/portraits/6.jpg")
+    def test_embed_match(self, mock_get_player_avatar, mock_hero_avatar):
         match_details = {
                             "ID": 123,
                             "Winner": 1,
@@ -92,7 +94,12 @@ class TestCogHelpers(unittest.TestCase):
                                     "Team": 0,
                                     "HeroID": 4,
                                     "MMR": 1200,
-                                    "MMRChange": -15
+                                    "MMRChange": -15,
+                                    "HeroLevel": 14,
+                                    "Kills":3,
+                                    "Deaths":10,
+                                    "Assists":2,
+                                    "CS":34
                                 },
                                 {
                                     "PlayerID": 6969,
@@ -100,7 +107,12 @@ class TestCogHelpers(unittest.TestCase):
                                     "Team": 1,
                                     "HeroID": 6,
                                     "MMR": 1100,
-                                    "MMRChange": 15
+                                    "MMRChange": 15,
+                                    "Kills":7,
+                                    "Deaths":2,
+                                    "Assists":3,
+                                    "CS":96,
+                                    "HeroLevel":15
                                 }
                             ]
                         }
@@ -111,10 +123,13 @@ class TestCogHelpers(unittest.TestCase):
         
         expected_winner = {
             "color": 0x00dc04,
-            "author":{"name":"Winner"},
-            "title": "Team 1 - Average ELO 1100",
+            "author":{"name":"saxy_beast", "icon_url":"https://api.playfault.com/imagecdn/avatars/21034.jpg"},
+            "title": "Narbash - lvl 15",
+            "thumbnail": {"url":"https://api.playfault.com/imagecdn/portraits/6.jpg"},
             "fields":[
-                {"name":"Narbash", "value":"saxy_beast: ELO 1100 (15)", "inline":False}
+                {"name":"ELO", "value":"1100 (15)", "inline":True},
+                {"name":"K/D/A", "value":"7/2/3 (5.0)", "inline":True},
+                {"name":"CS", "value":"96", "inline":True}
             ],
             "footer": {"text":"1:00:20 - id:123"}
         }
@@ -122,23 +137,24 @@ class TestCogHelpers(unittest.TestCase):
 
         expected_loser = {
             "color": 0xef0000,
-            "author":{"name":"Loser"},
-            "title": "Team 0 - Average ELO 1200",
+            "author":{"name":"qchrisd", "icon_url":"https://api.playfault.com/imagecdn/avatars/21034.jpg"},
+            "title": "Twinblast - lvl 14",
+            "thumbnail": {"url":"https://api.playfault.com/imagecdn/portraits/6.jpg"},
             "fields":[
-                {"name":"Twinblast", "value":"qchrisd: ELO 1200 (-15)", "inline":False}
+                {"name":"ELO", "value":"1200 (-15)", "inline":True},
+                {"name":"K/D/A", "value":"3/10/2 (0.5)", "inline":True},
+                {"name":"CS", "value":"34", "inline":True},
             ],
             "footer": {"text":"1:00:20 - id:123"}
         }
         expected_loser = discord.Embed.from_dict(expected_loser).to_dict()
+
+        expected_embeds = [expected_winner, expected_loser]
         
-        actual_winner, actual_loser = embed_match(match_details, id_to_hero)
+        actual_embeds = embed_match(match_details, id_to_hero)
+        actual_embeds = [discord.Embed.to_dict(x) for x in actual_embeds]
 
-        print()
-        print(actual_winner.to_dict())
-        print(expected_winner)
-
-        self.assertEqual(actual_winner.to_dict(), expected_winner)
-        self.assertEqual(actual_loser.to_dict(), expected_loser)
+        self.assertEqual(actual_embeds, expected_embeds)
 
 
 if __name__ == '__main__':

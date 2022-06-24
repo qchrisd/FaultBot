@@ -169,6 +169,8 @@ class GameStats(slash_util.Cog):
         Currently supports only one match.
         """
 
+        await ctx.send("Getting your match data...")
+
         if fault_name == None:
             guild_id = str(ctx.guild.id)
             discord_name = f"{ctx.author.name}#{ctx.author.discriminator}"
@@ -195,9 +197,10 @@ class GameStats(slash_util.Cog):
                 log.error(f"Failed to get user {fault_name} from Fault website.")
                 return
         
-        match = api.get_matches(user)
+        user_match = api.get_matches(user)
+        match = api.get_match_data(user_match['id'])
         _, id_to_hero = api.get_hero_dicts()
 
-        embed_win, embed_lose = helpers.embed_match(match, id_to_hero)
+        embeds = helpers.embed_match(match, id_to_hero, fault_name)
 
-        await ctx.send(embeds=[embed_win, embed_lose])
+        await ctx.send(embeds=embeds)
