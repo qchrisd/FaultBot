@@ -167,7 +167,10 @@ def embed_match(match_details, id_to_hero, fault_name):
     
     for player in match_details['Players']:
 
-        kda = (player['Kills']+player['Assists'])/player['Deaths']
+        try:
+            kda = (player['Kills']+player['Assists'])/player['Deaths']
+        except ZeroDivisionError as e:
+            kda = player['Kills']+player['Assists']
 
         fields = []
         fields.append({"name":"ELO", "value":f"{player['MMR']} ({player['MMRChange']})", "inline":True})
