@@ -25,8 +25,8 @@ log = setup_logger("bot/fault_bot.log", "bot.fault_bot")
 
 # Load the environmental variables from the .env file
 load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN_DEV')
-GUILD = os.getenv('DISCORD_GUILDID_DEV')
+TOKEN = os.getenv('DISCORD_TOKEN')
+GUILD = os.getenv('DISCORD_GUILDID')
 
 
 # Create the discord bot
