@@ -421,36 +421,53 @@ def get_match_data(match_id):
     Returns a dict.
 
     {
-        "id": 0,
-        "winner": 0,
-        "timeLength": "string",
-        "startDateTime": "string",
-        "status": 0,
-        "players": 
-        [
+        "ID": 798209,
+        "Winner": 0,
+        "StartDateTime": "2022-03-19T19:02:28.000Z",
+        "TimeLength": "00:32:37",
+        "Status": 2,
+        "CustomMatch": 0,
+        "MatchType": 0,
+        "Players": [
             {
-                "playerId": 0,
-                "team": 0,
-                "heroId": 0,
-                "heroLevel": 0,
-                "kills": 0,
-                "deaths": 0,
-                "assists": 0,
-                "heroDamage": 0,
-                "damageTaken": 0,
-                "gold": 0,
-                "card1": 0,
-                "card2": 0,
-                "item1": 0,
-                "item2": 0,
-                "item3": 0,
-                "item4": 0,
-                "item5": 0,
-                "item6": 0,
-                "cs": 0,
-                "username": "string",
-                "mmr": 0,
-                "mmrChange": 0
+                "PlayerID": 29016,
+                "Team": 1,
+                "HeroID": 25,
+                "HeroLevel": 15,
+                "Kills": 7,
+                "Deaths": 10,
+                "Assists": 7,
+                "HeroDamage": 11092,
+                "MinionDamage": 20550,
+                "StructureDamage": 127,
+                "DamageTaken": 26353,
+                "Healing": 0,
+                "SelfHealing": 0,
+                "Shielding": 0,
+                "SelfShielding": 0,
+                "UnusedFavor": 0,
+                "RedFavor": 7,
+                "WhiteFavor": 0,
+                "BlackFavor": 0,
+                "BlueFavor": 0,
+                "GreenFavor": 0,
+                "WardsPlaced": 5,
+                "Raptors": 0,
+                "Primes": 1,
+                "StructuresDestroyed": 1,
+                "Gold": 10252,
+                "Card1": 6,
+                "Card2": 0,
+                "Item1": -1,
+                "Item2": 74,
+                "Item3": 145,
+                "Item4": 135,
+                "Item5": 5,
+                "Item6": 87,
+                "CS": 96,
+                "Username": "qchrisd",
+                "MMR": 1264,
+                "MMRChange": -32
             }
         ]
     }
@@ -554,6 +571,8 @@ def get_image_hero_portrait(hero_id):
     """
 
     image_link = f"https://api.playfault.com/imagecdn/portraits/{hero_id}.jpg"
+
+    return image_link
 
 
 def get_player_avatar(user):

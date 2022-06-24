@@ -7,6 +7,7 @@ Written by Chris Quartararo
 
 # imports
 import discord
+import fault_api as api
 
 # Set up logging
 import bot.logger
@@ -146,58 +147,70 @@ def embed_elo(fault_name, elo_title, mmr, ranking, avatar_link):
     return embed
 
 
-def embed_match(match_details, id_to_hero):
+def embed_match(match_details, id_to_hero, fault_name):
     """
     Create two embeds, one for the winning team and one for the losing team.
     """
     
     colors = {"win":0x00dc04, "lose":0xef0000}
 
-    footer = {"text":f"{match_details['timeLength']} - id:{match_details['id']}"}
+    footer = {"text":f"{match_details['TimeLength']} - id:{match_details['ID']}"}
 
-    team_win = match_details['winner']
-    team_lose = int(not match_details['winner'])
+    team_win = match_details['Winner']
+    team_lose = int(not match_details['Winner'])
 
-    fields_win = []
-    fields_lose = []
+    embeds_win = []
+    embeds_lose = []
 
     elo_win = 0
     elo_lose = 0
     
-    for player in match_details['players']:
-        new_field_title = f"{id_to_hero[player['heroId']]}"
-        new_field_value = f"{player['username']}: ELO {player['mmr']:.0f} ({player['mmrChange']:.0f})"
-        new_field = {"name":new_field_title, "value": new_field_value, "inline": False}
+    for player in match_details['Players']:
 
-        if player['team'] == match_details['winner']:
-            fields_win.append(new_field)
-            elo_win += player['mmr']
+        try:
+            kda = (player['Kills']+player['Assists'])/player['Deaths']
+        except ZeroDivisionError as e:
+            kda = player['Kills']+player['Assists']
+
+        fields = []
+        fields.append({"name":"ELO", "value":f"{player['MMR']} ({player['MMRChange']})", "inline":True})
+        fields.append({"name":"K/D/A", "value":f"{player['Kills']}/{player['Deaths']}/{player['Assists']} ({kda:.1f})", "inline":True})
+        fields.append({"name":"CS", "value":f"{player['CS']}", "inline":True})
+
+        author_icon_url = api.get_player_avatar(api.get_user(player['Username']))['avatarURI']
+        author_name = f"{player['Username']}"
+        if author_name == fault_name:
+            author_name += u" U+1F3AE"
+        author = {"name":author_name, "icon_url":author_icon_url}
+
+        thumbnail = {"url":api.get_image_hero_portrait(player['HeroID'])}
+
+        title = f"{id_to_hero[player['HeroID']]} - lvl {player['HeroLevel']}"
+
+        if player['Team'] == match_details['Winner']:
+            elo_win += player['MMR']
+            embeds_win.append({
+                "color":colors['win'],
+                "author":author,
+                "thumbnail":thumbnail,
+                "title":title,
+                "fields":fields
+            })
         else:
-            fields_lose.append(new_field)
-            elo_lose += player['mmr']
+            elo_lose += player['MMR']
+            embeds_lose.append({
+                "color":colors['lose'],
+                "author":author,
+                "thumbnail":thumbnail,
+                "title":title,
+                "fields":fields
+            })
 
-    elo_win_average = elo_win/len(fields_win)
-    elo_lose_average = elo_lose/len(fields_lose)
 
-    title_win = f"Team {team_win} - Average ELO {elo_win_average:.0f}"
-    title_lose = f"Team {team_lose} - Average ELO {elo_lose_average:.0f}"
+    elo_win_average = elo_win/(len(match_details['Players'])/2)
+    elo_lose_average = elo_lose/(len(match_details['Players'])/2)
 
-    dict_win = {
-        "color":colors['win'],
-        "author":{"name":"Winner"},
-        "title":title_win,
-        "fields":fields_win,
-        "footer":footer
-    }
-    dict_lose = {
-        "color":colors['lose'],
-        "author":{"name":"Loser"},
-        "title":title_lose,
-        "fields":fields_lose,
-        "footer":footer
-    }
+    embeds = embeds_win + embeds_lose
+    embeds = [discord.Embed.from_dict(x) for x in embeds]
 
-    embed_win = discord.Embed.from_dict(dict_win)
-    embed_lose = discord.Embed.from_dict(dict_lose)
-
-    return embed_win, embed_lose
+    return embeds
